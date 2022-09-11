@@ -58,12 +58,13 @@ class Product(models.Model):
     address = models.OneToOneField(Address, on_delete=models.CASCADE)
     image = models.ImageField(null=False, blank=False, upload_to='media/product_pics', verbose_name='product_image',
                               validators=[validators.file_size_limit])
+
     class Status(models.TextChoices):
-        AVALIABLE = ('AVALIABLE','AVALIABLE')
-        UNAVAIABLE = ('UNAVALIABLE','UNAVALIABLE')
+        AVALIABLE = ('AVALIABLE', 'AVALIABLE')
+        UNAVAIABLE = ('UNAVALIABLE', 'UNAVALIABLE')
 
     status = models.CharField(max_length=11, choices=Status.choices, default=Status.AVALIABLE, null=False,
-                                 blank=False, verbose_name="status")
+                              blank=False, verbose_name="status")
     stock = models.IntegerField(default=1, validators=[MinValueValidator(0)])
 
     def __str__(self):
@@ -72,17 +73,20 @@ class Product(models.Model):
     def get_product_all(self):
         return "{} {} {} {} {}".format(self.product_name, self.price, self.merchant, self.description, self.address)
 
+
 class Bike(Product):
     class BikeSize(models.TextChoices):
-        SMALL = ('SMALL','SMALL')
-        MEDIUM = ('MEDIUM','MEDIUM')
-        LARGE = ('LARGE','LARGE')
+        SMALL = ('SMALL', 'SMALL')
+        MEDIUM = ('MEDIUM', 'MEDIUM')
+        LARGE = ('LARGE', 'LARGE')
 
-    bike_size = models.CharField(max_length=6,choices=BikeSize.choices,default=BikeSize.SMALL,null=False,blank=False,verbose_name="BikeSize")
+    bike_size = models.CharField(max_length=6, choices=BikeSize.choices, default=BikeSize.SMALL, null=False,
+                                 blank=False, verbose_name="BikeSize")
 
     class Style(models.TextChoices):
-        STYLEA = ('STYLEA','STYLEA')
-        STYLEB = ('STYLEB','STYLEB')
-        STYLEC = ('STYLEC','STYLEC')
+        STYLEA = ('STYLEA', 'STYLEA')
+        STYLEB = ('STYLEB', 'STYLEB')
+        STYLEC = ('STYLEC', 'STYLEC')
 
-    bike_style = models.CharField(max_length=200, choices=Style.choices, default=Style.STYLEA,null=False,blank=False,verbose_name="Style")
+    bike_style = models.CharField(max_length=200, choices=Style.choices, default=Style.STYLEA, null=False, blank=False,
+                                  verbose_name="Style")

@@ -124,7 +124,7 @@ a:hover {
     position: absolute;
     width: 40px;
     height: 2px;
-    background: #ee4266;
+    background: #17a2b8;
 }
 
 .site-section-heading.text-center:before {
@@ -137,7 +137,7 @@ a:hover {
     position: absolute;
     width: 40px;
     height: 2px;
-    background: #ee4266;
+    background: #17a2b8;
 }
 
 .border-top {
@@ -154,7 +154,7 @@ a:hover {
 }
 
 .site-footer ul li a:hover {
-    color: #ee4266;
+    color: #17a2b8!important;
 }
 
 .site-footer .footer-heading {
@@ -290,7 +290,7 @@ a:hover {
     border-radius: 50%;
     display: block;
     text-align: center;
-    background: #ee4266;
+    background: #17a2b8;
     color: #fff;
     /*-webkit-transition: .2s all ease-in-out;*/
     /*-o-transition: .2s all ease-in-out;*/
@@ -318,7 +318,7 @@ a:hover {
 }
 
 .site-navbar .site-navigation .site-menu .active > a {
-    color: #ee4266;
+    color: #17a2b8;
 }
 
 .site-navbar .site-navigation .site-menu a {
@@ -342,7 +342,7 @@ a:hover {
 }
 
 .site-navbar .site-navigation .site-menu > li > a:hover {
-    color: #ee4266;
+    color: #17a2b8!important;
 }
 
 .site-navbar .site-navigation .site-menu .has-children {
@@ -372,7 +372,7 @@ a:hover {
     top: 100%;
     position: absolute;
     text-align: left;
-    border-top: 2px solid #ee4266;
+    border-top: 2px solid #17a2b8;
     -webkit-box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.05);
     box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.05);
     border-left: 1px solid #edf0f5;
@@ -401,7 +401,7 @@ a:hover {
 }
 
 .site-navbar .site-navigation .site-menu .has-children .dropdown .active > a {
-    color: #ee4266 !important;
+    color: #17a2b8 !important;
 }
 
 .site-navbar .site-navigation .site-menu .has-children .dropdown > li {
@@ -441,7 +441,7 @@ a:hover {
 }
 
 .site-navbar .site-navigation .site-menu .has-children:hover > a, .site-navbar .site-navigation .site-menu .has-children:focus > a, .site-navbar .site-navigation .site-menu .has-children:active > a {
-    color: #ee4266;
+    color: #17a2b8;
 }
 
 .site-navbar .site-navigation .site-menu .has-children:hover, .site-navbar .site-navigation .site-menu .has-children:focus, .site-navbar .site-navigation .site-menu .has-children:active {
@@ -555,7 +555,7 @@ a:hover {
 }
 
 .site-mobile-menu .site-nav-wrap a:hover {
-    color: #ee4266;
+    color: #17a2b8!important;
 }
 
 .site-mobile-menu .site-nav-wrap li {
@@ -564,7 +564,7 @@ a:hover {
 }
 
 .site-mobile-menu .site-nav-wrap li.active > a {
-    color: #ee4266;
+    color: #17a2b8;
 }
 
 .site-mobile-menu .site-nav-wrap .arrow-collapse {
@@ -745,7 +745,7 @@ a:hover {
 
 .site-blocks-1 .icon span {
     position: relative;
-    color: #ee4266;
+    color: #17a2b8;
     top: -10px;
     font-size: 50px;
     display: inline-block;
@@ -891,7 +891,7 @@ a:hover {
     left: 0;
     font-size: 20px;
     line-height: 1;
-    color: #ee4266;
+    color: #17a2b8!important;
 }
 
 .block-5 ul li.address:before {
@@ -974,7 +974,7 @@ a:hover {
 }
 
 .site-blocks-table tbody tr:first-child td {
-    border-top: 1px solid #ee4266 !important;
+    border-top: 1px solid #17a2b8 !important;
 }
 
 .site-block-order-table th {
@@ -1031,7 +1031,7 @@ a:hover {
 }
 
 .site-block-27 ul li.active a, .site-block-27 ul li.active span {
-    background: #ee4266;
+    background: #17a2b8;
     color: #fff;
     border: 1px solid transparent;
 }
@@ -1045,7 +1045,7 @@ a:hover {
     height: 16px;
     border-radius: 50%;
     border: none !important;
-    background: #ee4266;
+    background: #17a2b8;
 }
 
 #slider-range .ui-slider-handle:focus, #slider-range .ui-slider-handle:active {
@@ -1053,7 +1053,7 @@ a:hover {
 }
 
 #slider-range .ui-slider-range {
-    background-color: #ee4266;
+    background-color: #17a2b8;
 }
 
 .color-item .color {
@@ -1127,7 +1127,7 @@ a:hover {
     line-height: 20px;
     color: #fff;
     font-size: 12px;
-    background: #ee4266;
+    background: #17a2b8;
     right: -2px;
 }
 
@@ -1191,7 +1191,7 @@ a:hover {
 
 .title-section h2 {
     padding-left: 30px;
-    border-left: 4px solid #ee4266;
+    border-left: 4px solid #17a2b8;
     display: inline-block;
     color: #000;
 }
@@ -1212,7 +1212,7 @@ a:hover {
     transform: translateX(-50%);
     width: 70px;
     height: 4px;
-    background: #ee4266;
+    background: #17a2b8;
     content: "";
 }
 
