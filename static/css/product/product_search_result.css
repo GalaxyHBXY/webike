@@ -1,0 +1,20 @@
+/*@media (max-width: 1288px){*/
+/*    #search-sec{*/
+/*        max-width: none !important;*/
+/*        border: 1px solid black!important;*/
+/*    }*/
+/*}*/
+
+@media (max-width: 767px){
+    #search-sec{
+        max-width: 700px !important;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 576px){
+    #search-sec{
+        max-width: 410px !important;
+        margin-right: auto;
+    }
+}

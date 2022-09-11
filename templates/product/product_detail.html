@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container-fluid px-0 d-flex h-100 main-sec" style="min-height: 50vh;">
+        <div class="row d-flex justify-content-between h-100 m-0 py-4">
+            <div class="col-12 col-lg-6">
+                <img src="{{ product.image.url }}" class="card mx-auto" alt="product image"
+                     style="height: 350px; width: 350px;">
+            </div>
+            <div class="col-12 col-lg-6" style="word-break: break-all;">
+                <h2 class="text-dark mb-0">
+                    {{ product.product_name }}
+                </h2>
+                <p class="text-muted">Yamaha</p>
+                <p class="text-right">
+                    {{ product.address }}
+                    <a href="#" class="ml-2">
+                        <button class="btn btn-outline-info">Search on map</button>
+                    </a>
+                </p>
+                <p class="text-muted mb-1 d-inline-block"> Size: Large</p>
+                <p class="text-muted mb-1 d-inline-block ml-4"> Color: Red </p>
+                <p class="text-muted">
+                    {#                        {{ product.description }}#}
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, vitae, explicabo? Incidunt
+                    facere, natus soluta dolores iusto! Molestiae expedita veritatis nesciunt doloremque sint asperiores
+                    fuga voluptas, distinctio, aperiam, ratione dolore.
+
+                    Ex numquam veritatis debitis minima quo error quam eos dolorum quidem perferendis. Quos repellat
+                    dignissimos minus, eveniet nam voluptatibus molestias omnis reiciendis perspiciatis illum hic magni
+                    iste, velit aperiam quis.
+                </p>
+
+                <h4 class="text-dark d-inline-block"> ${{ product.price | floatformat:"2" }} </h4>
+                <p class="text-success m-0 d-inline-block ml-4 align-top">In Stock: 37</p>
+                <div class="input-group my-3" style="max-width: 120px;">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-dark js-btn-minus" type="button">&minus;</button>
+                    </div>
+                    <input type="number" class="form-control text-center" value="1" placeholder=""
+                           aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-dark js-btn-plus" type="button">&plus;</button>
+                    </div>
+                </div>
+                <button class="btn btn-info mt-2">Buy Now</button>
+            </div>
+        </div>
+{% endblock content %}

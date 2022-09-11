@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/product/product_search_result.css' %}">
+{% endblock css %}
+{% block content %}
+    <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
+        <div class="col-12 col-md-9 col-xl-3 p-0" style="min-width: 220px;" id="search-sec">
+            <div class="p-1">
+                <form>
+                    <div class="input-group mb-2 m-0">
+                        <input type="search" class="form-control rounded"/>
+                        <button type="button" class="btn btn-outline-dark ml-1">
+                            <i class="icon-search"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#filter"
+                            aria-expanded="false" aria-controls="collapseExample">
+                        <span class="icon-filter"></span> Filter
+                    </button>
+                    <div class="collapse py-2" id="filter">
+                        <a class="mb-0 text-info" href="">Select All</a>
+                        <a class="ml-2 mb-0 text-danger" href="">Select None</a>
+                        <div class="row p-0 pl-xl-3">
+                            <div class="col-6 col-md-4 col-xl-12 mt-3">
+                                <p class="mb-0" style="max-width: 150px;">Bike Size</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Small
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Medium
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Large
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-xl-12 mt-3">
+                                <p class="mb-0" style="max-width: 150px;">Style</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Racing
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Road
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Mountain
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-xl-12 mt-3">
+                                <p class="mb-0" style="max-width: 150px;">Brand</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        A
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        B
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        C
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 row m-0 p-0" style="max-width: 1000px;">
+            {% for each in products %}
+                <div class="col-12 col-sm-6 col-xl-4 p-1">
+                    <div class="card h-100" style="max-width: 400px;">
+                        <a href="{% url 'product_detail' each.id %}">
+                            <img src="{{ each.image.url }}" class="card-img-top" alt="product image">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title text-dark mb-0">
+                                <a class="a_link"
+                                   href="{% url 'product_detail' each.id %}">{{ each.product_name }}</a>
+                            </h5>
+                            <p class="mb-0 mb-md-2">{{ each.merchant.merchant_name }}</p>
+                            {% if each.description|length > 80 %}
+                                <p class="card-text">
+                                    {{ each.description|slice:":80" }}...
+                                </p>
+                            {% else %}
+                                <p class="card-text">
+                                    {{ each.description }}
+                                </p>
+                            {% endif %}
+                            <p class="card-text text-info"><small>$</small> {{ each.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

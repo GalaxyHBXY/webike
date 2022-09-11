@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WeBike {{ sub_title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+    <link rel="stylesheet" href="{% static 'font/icomoon/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css %}
+    {% endblock css %}
+</head>
+
+<body>
+<div class="site-wrap h-100" style="display: flex; flex-direction: column; min-height: 100vh;">
+    <!-- Header -->
+    <div class="site-navbar bg-white py-2 container-fluid main-sec">
+        <!-- 搜索框 -->
+        <div class="search-wrap">
+            <div class="w-100">
+                <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
+                <form action="{% url 'product_search' %}" method="GET">
+                    <input type="text" class="form-control p-0" placeholder="search keyword and hit enter" name="keyword">
+                </form>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <a href="{% url 'index' %}" class="js-logo-clone">
+                    <img src="{% static 'img/logos/Recurso_7.png' %}" alt="logo" width="150">
+                </a>
+            </div>
+            <div class="main-nav d-none d-lg-block">
+                <nav class="site-navigation text-right text-md-center" role="navigation">
+                    <ul class="site-menu js-clone-nav d-none d-lg-block">
+                        <li><a href="{% url 'index' %}">we-bike</a></li>
+                        <li><a href="shop.html">we-bikers</a></li>
+                        <li><a href="#">we-sellers</a></li>
+                        <li><a href="contact.html">we-renters</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="icons">
+                <a href="#" class="icons-btn d-inline-block js-search-open py-1">
+                    <span class="icon-search"></span>
+                </a>
+{#                <a href="cart.html" class="icons-btn d-inline-block bag py-1">#}
+{#                    <span class="icon-shopping-bag"></span>#}
+{#                    <span class="number">2</span>#}
+{#                </a>#}
+                {% if request.user.is_authenticated %}
+                    <nav class="site-navigation text-right text-md-center d-inline-block" role="navigation">
+                        <ul class="site-menu">
+                            <li class="has-children p-0">
+                                <a href="#" class="icons-btn d-inline-block py-1 pr-2 pl-0">
+                                    <span class="icon-person" style="font-size: 20px;"></span>
+                                </a>
+                                <ul class="dropdown account-dropdown" style="word-break: break-word;">
+                                    {% if request.user.user_type == 'Customer' %}
+                                        <li>
+                                            <a style="cursor: default;">
+                                                Welcome back, {{ request.user.customer.first_name }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'customer_home' %}">Home</a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a style="cursor: default;" class="text-dark">
+                                                Welcome back, {{ request.user.merchant.merchant_name }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'merchant_home' %}">Home</a>
+                                        </li>
+                                    {% endif %}
+                                    <li>
+                                        <a href="{% url 'logout' %}">
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                {% else %}
+                    <a href="{% url 'login' %}" class="icons-btn d-inline-block align-top">
+                        <button class="btn btn-outline-secondary m-0" style="height: 40px;">
+                            Login
+                        </button>
+                    </a>
+                {% endif %}
+                <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-lg-none"><span
+                        class="icon-menu"></span></a>
+            </div>
+        </div>
+    </div>
+
+    {% if not hide_hr %}
+        <div class="container-fluid p-0 main-sec">
+            <hr class="m-0 mb-4">
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div style="min-height: 50vh;">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    {% if not hide_hr %}
+        <div class="container-fluid mt-auto p-0 main-sec">
+            <hr class="m-0 my-4">
+        </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <div class="container-fluid py-4 px-0 main-sec">
+        <footer class="site-footer w-100">
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Promo</h3>
+                    <a href="#" class="block-6">
+                        <img src="static/img/logos/Recurso 3.png" alt="Image placeholder" width="300">
+                        <h3 class="font-weight-light  mb-0">Finding Your Perfect Shirts This Summer</h3>
+                        <p>Promo from July 15 &mdash; 25, 2019</p>
+                    </a>
+                </div>
+                <div class="col-lg-5 ml-auto mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Quick Links</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Sell online</a></li>
+                                <li><a href="#">Features</a></li>
+                                <li><a href="#">Shopping cart</a></li>
+                                <li><a href="#">Store builder</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Mobile commerce</a></li>
+                                <li><a href="#">Dropshipping</a></li>
+                                <li><a href="#">Website development</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Point of sale</a></li>
+                                <li><a href="#">Hardware</a></li>
+                                <li><a href="#">Software</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Contact Info</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
+                            <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
+                            <li class="email">emailaddress@domain.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-3 text-center">
+                <div class="col-md-12">
+                    <p>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        All rights reserved
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/aos.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+{% block javascript %}
+{% endblock javascript %}
+</body>

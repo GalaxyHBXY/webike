@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container-fluid w-75">
+        <h1 class="text-dark mx-auto text-center mb-4" style="max-width: 600px;">Choose Your Account Type</h1>
+        <div class="card mx-auto" style="max-width: 600px;">
+            <div class="card-body row align-items-center">
+                <div class="col-8">
+                    <h5 class="card-title text-dark">Customer</h5>
+                    <p class="card-text">I want to buy / rent E-Bikes.</p>
+                    <a href="{% url 'customer_signup' %}">
+                        <button class="btn btn-info">Confirm</button>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <span class="icon-shopping-cart text-dark" style="font-size: 85px;"></span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card mx-auto" style="max-width: 600px;">
+            <div class="card-body row align-items-center">
+                <div class="col-8">
+                    <h5 class="card-title text-dark">Merchant</h5>
+                    <p class="card-text">I want to sell / rent out E-Bikes.</p>
+                    <a href="{% url 'merchant_signup' %}">
+                        <button class="btn btn-info">Confirm</button>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <span class="icon-attach_money text-dark" style="font-size: 85px;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

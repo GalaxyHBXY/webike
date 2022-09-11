@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container-fluid px-0 d-flex h-100" style="min-height: 50vh;">
+        <section class="mx-auto rounded align-self-center" style="width: 85%;">
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-md-9 col-lg-6 col-xl-5">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                             class="img-fluid" alt="Sample image">
+                    </div>
+                    <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                        <h2 class="text-uppercase text-info">
+                            Merchant Sign Up
+                        </h2>
+                        <form action="{% url 'merchant_signup' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
+                                       for="{{ u_form.email.id_for_label }}">{{ u_form.email.label }}</label>
+                                {% if u_form.email.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger" id="{{ u_form.email.id_for_label }}_error">
+                                    {% if u_form.email.errors %}
+                                        {{ u_form.email.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ u_form.email }}
+                                {% if u_form.email.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ u_form.email.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
+                                       for="{{ m_form.merchant_name.id_for_label }}">{{ m_form.merchant_name.label }}</label>
+                                {% if m_form.merchant_name.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger"
+                                    id="{{ m_form.merchant_name.id_for_label }}_error">
+                                    {% if m_form.merchant_name.errors %}
+                                        {{ m_form.merchant_name.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ m_form.merchant_name }}
+                                {% if m_form.merchant_name.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ m_form.merchant_name.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
+                                       for="{{ u_form.password1.id_for_label }}">{{ u_form.password1.label }}</label>
+                                {% if u_form.password1.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger"
+                                    id="{{ u_form.password1.id_for_label }}_error">
+                                    {% if u_form.password1.errors %}
+                                        {{ u_form.password1.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ u_form.password1 }}
+                                {% if u_form.password1.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ u_form.password1.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
+                                       for="{{ u_form.password2.id_for_label }}">{{ u_form.password2.label }}</label>
+                                {% if u_form.password2.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger"
+                                    id="{{ u_form.password2.id_for_label }}_error">
+                                    {% if u_form.password2.errors %}
+                                        {{ u_form.password2.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ u_form.password2 }}
+                                {% if u_form.password2.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ u_form.password2.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="text-center text-lg-start mt-4 pt-2">
+                                <button type="submit" class="btn btn-info btn-lg"
+                                        style="padding-left: 2.5rem; padding-right: 2.5rem;">Login
+                                </button>
+                                <p class="mt-2 pt-1 mb-0 font-weight-bold">
+                                    Already have an account?
+                                    <a href="{% url 'login' %}">Login</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

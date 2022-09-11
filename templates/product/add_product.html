@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.min.css">
+{% endblock css %}
+{% block content %}
+    <div class="container-fluid w-75">
+        <h4 class="text-info">Add new  product</h4>
+        <form action="{% url 'add_new_product' %}" method="POST" enctype="multipart/form-data" id="image-form">
+            {% csrf_token %}
+            {% for field in p_form %}
+                <div class="form-outline mb-4">
+                    <label class="form-label font-weight-bold"
+                           for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.field.required %}
+                        <span class="text-danger">*</span>
+                    {% endif %}
+                    <h6 class="text-danger" id="{{ field.id_for_label }}_error">
+                        {% if field.errors %}
+                            {{ field.errors.0 |escape }}
+                        {% endif %}
+                    </h6>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-muted mt-1"
+                           style="font-size: 0.9rem">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div id="image-box" class="mb-3 d-none" style="width: 256px; height: 144px;"></div>
+            <h6 class="text-success d-none" id="image-msg">Upload Success</h6>
+            <button type="button" class="btn btn-primary my-2 d-none" id="confirm-btn">Upload</button>
+            {% for field in a_form %}
+                <div class="form-outline mb-4">
+                    <label class="form-label font-weight-bold"
+                           for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.field.required %}
+                        <span class="text-danger">*</span>
+                    {% endif %}
+                    <h6 class="text-danger" id="{{ field.id_for_label }}_error">
+                        {% if field.errors %}
+                            {{ field.errors.0 |escape }}
+                        {% endif %}
+                    </h6>
+                    {{ field }}
+                {{ a_form.get_state_display }}
+                    {% if field.help_text %}
+                        <p class="text-muted mt-1"
+                           style="font-size: 0.9rem">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="btn btn-info" type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock content %}
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.min.js"></script>
+    <script>
+
+        function getRoundedCanvas(sourceCanvas) {
+            let canvas = document.createElement('canvas');
+            let context = canvas.getContext('2d');
+            let width = sourceCanvas.width;
+            let height = sourceCanvas.height;
+
+            canvas.width = width;
+            canvas.height = height;
+            context.imageSmoothingEnabled = true;
+            context.drawImage(sourceCanvas, 0, 0, width, height);
+            context.globalCompositeOperation = 'destination-in';
+            context.beginPath();
+            context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+            context.fill();
+            return canvas;
+        }
+
+        const imageBox = document.getElementById('image-box')
+        const imageForm = document.getElementById('image-form')
+        const confirmBtn = document.getElementById('confirm-btn')
+        const input = document.getElementById('id_image')
+        const imageMsg = document.getElementById('image-msg')
+
+        const csrf = document.getElementsByName('csrfmiddlewaretoken')
+
+        input.addEventListener('change', () => {
+            imageMsg.classList.add('d-none')
+            imageBox.classList.remove('d-none')
+            confirmBtn.classList.remove('d-none')
+            const img_data = input.files[0]
+            const url = URL.createObjectURL(img_data)
+
+            imageBox.innerHTML = `<img src="${url}" id="image" width="800px">`
+            let $image = $('#image')
+            console.log($image)
+
+            $image.cropper({
+                aspectRatio: 16 / 9,
+                viewMode: 1,
+                autoCropArea: 1,
+                crop: function (event) {
+                }
+            });
+
+            var cropper = $image.data('cropper');
+            confirmBtn.addEventListener('click', () => {
+                cropper.getCroppedCanvas({
+                    width: 800,
+                    height: 450,
+                    imageSmoothingEnabled: 1,
+                    imageSmoothingQuality: 'high',
+                }).toBlob((blob) => {
+                    // Gets the original image data
+                    let fileInputElement = document.getElementById('id_image');
+                    // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+                    let file = new File([blob], img_data.name, {type: "image/*", lastModified: new Date().getTime()});
+                    // Create a new container
+                    let container = new DataTransfer();
+                    // Add the cropped image file to the container
+                    container.items.add(file);
+                    // Replace the original image file with the new cropped image file
+                    fileInputElement.files = container.files;
+                    imageMsg.classList.remove('d-none')
+                    imageBox.classList.add('d-none')
+                    confirmBtn.classList.add('d-none')
+                    /*
+                    $.ajax({
+                        type: 'POST',
+                        url: imageForm.action,
+                        enctype: 'multipart/form-data',
+                        data: fd,
+                        success: function (response) {
+                            console.log('success', response)
+                            alertBox.innerHTML = `<div class="alert alert-success" role="alert">
+                                            Successfully saved and cropped the selected image
+                                        </div>`
+                        },
+                        error: function (error) {
+                            console.log('error', error)
+                            alertBox.innerHTML = `<div class="alert alert-danger" role="alert">
+                                            Ups...something went wrong
+                                        </div>`
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                    })
+                    */
+                })
+            })
+        })
+    </script>
+{% endblock javascript %}
