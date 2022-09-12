@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Select
 
-from product.models import Product, Address
+from product.models import Product, Address, Bike
 
 
 class createProductForm(forms.ModelForm):
@@ -11,6 +11,18 @@ class createProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(createProductForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if visible.name != "image":
+                visible.field.widget.attrs['class'] = 'form-control'
+
+
+class createBikeForm(forms.ModelForm):
+    class Meta:
+        model = Bike
+        fields = ['product_name', 'price', 'description', 'bike_size', 'bike_style', 'image']
+
+    def __init__(self, *args, **kwargs):
+        super(createBikeForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             if visible.name != "image":
                 visible.field.widget.attrs['class'] = 'form-control'

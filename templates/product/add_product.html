@@ -6,7 +6,7 @@
 {% block content %}
     <div class="container-fluid w-75">
         <h4 class="text-info">Add new  product</h4>
-        <form action="{% url 'add_new_product' %}" method="POST" enctype="multipart/form-data" id="image-form">
+        <form action="{% url 'add_new_product' %}" method="post" enctype="multipart/form-data" id="image-form">
             {% csrf_token %}
             {% for field in p_form %}
                 <div class="form-outline mb-4">
@@ -27,6 +27,8 @@
                     {% endif %}
                 </div>
             {% endfor %}
+            <input value="{{ trade_type }}" hidden name="trade_type">
+            <input value="{{ product_type }}" hidden name="product_type">
             <div id="image-box" class="mb-3 d-none" style="width: 256px; height: 144px;"></div>
             <h6 class="text-success d-none" id="image-msg">Upload Success</h6>
             <button type="button" class="btn btn-primary my-2 d-none" id="confirm-btn">Upload</button>

@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 # Create your views here.
 from merchant.forms import CreateMerchantForm
@@ -14,6 +15,7 @@ from .models import Merchant
 @login_required
 def home(request):
     merchant = Merchant.objects.get(user=request.user)
+    add_product_url = reverse("add_new_product")
     context = {'products': Product.objects.filter(merchant=merchant).order_by("-id"), 'merchant': merchant}
     return render(request, template_name="merchant/merchant_homepage.html", context=context)
 

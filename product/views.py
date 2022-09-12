@@ -3,12 +3,15 @@ from django.shortcuts import render, redirect
 
 from main.views import fail
 from merchant.models import Merchant
-from product.forms import createProductForm, createAddressForm
+from product.forms import createProductForm, createAddressForm, createBikeForm
 from product.models import Product
 
 
 # Create your views here.
-def post_new_product(request):
+def add_new_product(request):
+    context = {}
+
+    # Validation
     if not request.user.is_authenticated:
         return redirect('index')
 
@@ -17,11 +20,19 @@ def post_new_product(request):
 
     p_form = createProductForm()
     a_form = createAddressForm()
-    # i_form = createProductImageForm()
+
+    # Pass GET data to context and override p_form to create bike
+    if request.method == "GET":
+        p_form = createBikeForm()
+        context['trade_type'] = request.GET['trade_type']
+        context['product_type'] = request.GET['product_type']
+
     if request.method == 'POST':
         p_form = createProductForm(request.POST, request.FILES)
         a_form = createAddressForm(request.POST)
-        # i_form = createProductImageForm(request.POST, request.FILES)
+
+        if request.POST.get("product_type") == "e_bike":
+            p_form = createBikeForm(request.POST, request.FILES)
 
         if p_form.is_valid() and a_form.is_valid():
             address_line1 = request.POST['address_line_1']
@@ -52,12 +63,19 @@ def post_new_product(request):
                 return fail(request, "Invalid network status")
 
             product = p_form.save(commit=False)
+
+            if request.POST.get("trade_type") == "sell":
+                pass
+            else:
+                pass
+
             product.merchant = request.user.merchant
             product.address = address
             product.save()
             return redirect("add_product_success")
 
-    context = {'p_form': p_form, 'a_form': a_form}
+    context['p_form'] = p_form
+    context['a_form'] = a_form
     return render(request, template_name="product/add_product.html", context=context)
 
 
