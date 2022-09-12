@@ -32,7 +32,8 @@ urlpatterns = [
     path('customer/', include('customer.urls')),
     path('merchant/', include('merchant.urls')),
     path('product/', include('product.urls')),
-    path('reset_password/', reset_password, name="reset_password")
+    path('reset_password/', reset_password, name="reset_password"),
+    path('pay',include('payments.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

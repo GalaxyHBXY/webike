@@ -5,6 +5,7 @@ from main.views import fail
 from merchant.models import Merchant
 from product.forms import createProductForm, createAddressForm, createBikeForm
 from product.models import Product
+from django.conf import settings
 
 
 # Create your views here.
@@ -85,7 +86,9 @@ def success(request):
 
 def detail(request, id):
     product = Product.objects.get(id=id)
-    context = {'product': product}
+    context = {'product': product,
+               'stripe_publishable_key':settings.STRIPE_PUBLISHABLE_KEY
+               }
     return render(request, template_name="product/product_detail.html", context=context)
 
 

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'merchant',
     'customer',
     'product',
-    'payment'
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +135,6 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51LgjMIBRIrkzup4HbaV38UqIc3Vfq5YnxaZ1CNtUnowxDnie1MY9cGjw4qNl6Zy4Krpu5BaoMvqzIT3gCltRoZAB008ZcVsq4k'
+STRIPE_SECRET_KEY = 'sk_test_51LgjMIBRIrkzup4Hpb3Djfs7PkRr45MfJNTIv0up4c80e1yEcAFWUyZA4HQ7EhuKOJzPFlohMnJP3EE7xbDp0XZX00NVPf9fer'
