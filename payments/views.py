@@ -21,6 +21,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 def create_checkout_session(request, id):
     request_data = json.loads(request.body)
     product = get_object_or_404(Product, pk=id)
+    quality = request_data['quality']
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     checkout_session = stripe.checkout.Session.create(
@@ -37,7 +38,7 @@ def create_checkout_session(request, id):
                     },
                     'unit_amount': int(product.price * 100),
                 },
-                'quantity': 1,
+                'quantity': quality,
             }
         ],
         mode='payment',

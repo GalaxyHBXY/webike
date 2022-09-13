@@ -34,7 +34,7 @@
                     <div class="input-group-prepend">
                         <button class="btn btn-outline-dark js-btn-minus" type="button">&minus;</button>
                     </div>
-                    <input type="number" class="form-control text-center" value="1" placeholder=""
+                    <input type="number" class="form-control text-center" value="1" placeholder="" id="quality"
                            aria-label="Example text with button addon" aria-describedby="button-addon1">
                     <div class="input-group-append">
                         <button class="btn btn-outline-dark js-btn-plus" type="button">&plus;</button>
@@ -52,9 +52,11 @@
         var stripe = Stripe('{{ stripe_publishable_key }}');
         var checkoutButton = document.getElementById('checkout-button');
 
+
         checkoutButton.addEventListener('click', function () {
 
             var email = document.getElementById('email').innerHTML;
+            var quality = document.getElementById('quality').value;
             if (email.length == 0) {
                 alert("Please enter your email address.");
                 return;
@@ -65,7 +67,10 @@
             fetch("{% url 'api_checkout_session' id=product.id %}", {
                 method: 'POST',
                 body: JSON.stringify(
-                    {email: email}
+                    {
+                        email: email,
+                        quality:quality
+                    },
                 )
             })
                 .then(function (response) {
