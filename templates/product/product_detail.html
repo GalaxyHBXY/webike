@@ -13,9 +13,7 @@
                 <p class="text-muted">Yamaha</p>
                 <p class="text-right">
                     {{ product.address }}
-                    <a href="#" class="ml-2">
-                        <button class="btn btn-outline-info">Search on map</button>
-                    </a>
+                    <button class="btn btn-outline-info" onclick="window.open('https://www.google.com/maps/search/{{ product.address.lat }}+{{ product.address.lng }}')">Search on map</button>
                 </p>
                 <p class="text-muted mb-1 d-inline-block"> Size: Large</p>
                 <p class="text-muted mb-1 d-inline-block ml-4"> Color: Red </p>
