@@ -29,7 +29,7 @@
                 </p>
 
                 <h4 class="text-dark d-inline-block"> ${{ product.price | floatformat:"2" }} </h4>
-                <p class="text-success m-0 d-inline-block ml-4 align-top">In Stock: 37</p>
+                <p class="text-success m-0 d-inline-block ml-4 align-top">In Stock: {{ product.stock }}</p>
                 <div class="input-group my-3" style="max-width: 120px;">
                     <div class="input-group-prepend">
                         <button class="btn btn-outline-dark js-btn-minus" type="button">&minus;</button>
