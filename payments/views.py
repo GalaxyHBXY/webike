@@ -13,15 +13,18 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Create your views here.
 
+
+# Create your views here.
 
 # Create your views here.
 @csrf_exempt
 def create_checkout_session(request, id):
     request_data = json.loads(request.body)
     product = get_object_or_404(Product, pk=id)
+
     quality = request_data['quality']
+    # 有被篡改
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     checkout_session = stripe.checkout.Session.create(
@@ -51,8 +54,10 @@ def create_checkout_session(request, id):
     order = OrderDetail()
     order.customer = request.user
     order.product = product
+    order.quality = quality
     order.stripe_payment_intent = checkout_session['payment_intent']
     order.save()
+
 
     return JsonResponse({'sessionId': checkout_session.id})
 
@@ -69,6 +74,7 @@ class PaymentSuccessView(LoginRequiredMixin, TemplateView):
         session = stripe.checkout.Session.retrieve(session_id)
 
         order = get_object_or_404(OrderDetail, stripe_payment_intent=session.payment_intent)
+
         # if not order.has_paid:
         #     current_user = request.user
         #     product = order.product
@@ -77,6 +83,9 @@ class PaymentSuccessView(LoginRequiredMixin, TemplateView):
         #     current_user.save()
         #     order.has_paid = True
         #     order.save()
+        order.product.stock=order.product.stock-order.quality
+        order.product.save()
+        order.save()
 
         return render(request, self.template_name)
 

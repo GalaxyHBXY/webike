@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from product.models import Product
@@ -23,6 +24,10 @@ class OrderDetail(models.Model):
         to=Product,
         verbose_name='Product',
         on_delete=models.PROTECT
+    )
+
+    quality = models.IntegerField(
+        validators=[MinValueValidator(1)]
     )
 
     stripe_payment_intent = models.CharField(

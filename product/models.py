@@ -59,6 +59,7 @@ class Product(models.Model):
     image = models.ImageField(null=False, blank=False, upload_to='media/product_pics', verbose_name='product_image',
                               validators=[validators.file_size_limit])
 
+
     class Status(models.TextChoices):
         AVALIABLE = ('AVALIABLE', 'AVALIABLE')
         UNAVAIABLE = ('UNAVALIABLE', 'UNAVALIABLE')

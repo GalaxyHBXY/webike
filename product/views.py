@@ -4,8 +4,9 @@ from django.shortcuts import render, redirect
 from main.views import fail
 from merchant.models import Merchant
 from product.forms import createProductForm, createAddressForm, createBikeForm
-from product.models import Product
+from product.models import Product,Bike
 from django.conf import settings
+
 
 
 # Create your views here.
@@ -86,10 +87,19 @@ def success(request):
 
 
 def detail(request, id):
-    product = Product.objects.get(id=id)
+    product = None
+    is_bike = False
+    try:
+        product = Bike.objects.get(id=id)
+        is_bike = True
+    except:
+        product = Product.objects.get(id=id)
+
     context = {'product': product,
+               'is_bike': is_bike,
                'stripe_publishable_key':settings.STRIPE_PUBLISHABLE_KEY
                }
+
     return render(request, template_name="product/product_detail.html", context=context)
 
 

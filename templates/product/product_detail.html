@@ -15,17 +15,12 @@
                     {{ product.address }}
                     <button class="btn btn-outline-info" onclick="window.open('https://www.google.com/maps/search/{{ product.address.lat }}+{{ product.address.lng }}')">Search on map</button>
                 </p>
-                <p class="text-muted mb-1 d-inline-block"> Size: Large</p>
-                <p class="text-muted mb-1 d-inline-block ml-4"> Color: Red </p>
+                {% if is_bike %}
+                    <p class="text-muted mb-1 d-inline-block">Size: {{ product.bike_size }}</p>
+                    <p class="text-muted mb-1 d-inline-block ml-4">Style: {{ product.bike_style }} </p>
+                {% endif %}
                 <p class="text-muted">
-                    {#                        {{ product.description }}#}
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, vitae, explicabo? Incidunt
-                    facere, natus soluta dolores iusto! Molestiae expedita veritatis nesciunt doloremque sint asperiores
-                    fuga voluptas, distinctio, aperiam, ratione dolore.
-
-                    Ex numquam veritatis debitis minima quo error quam eos dolorum quidem perferendis. Quos repellat
-                    dignissimos minus, eveniet nam voluptatibus molestias omnis reiciendis perspiciatis illum hic magni
-                    iste, velit aperiam quis.
+                    {{ product.description }}
                 </p>
 
                 <h4 class="text-dark d-inline-block"> ${{ product.price | floatformat:"2" }} </h4>
