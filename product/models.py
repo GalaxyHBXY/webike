@@ -90,3 +90,6 @@ class Bike(Product):
 
     bike_style = models.CharField(max_length=200, choices=Style.choices, default=Style.STYLEA, null=False, blank=False,
                                   verbose_name="Style")
+
+    is_rent = models.BooleanField(default=False     )
+

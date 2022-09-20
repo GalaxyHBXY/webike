@@ -24,9 +24,10 @@ def add_new_product(request):
 
     # Pass GET data to context and override p_form to create bike
     if request.method == "GET":
-        p_form = createBikeForm()
-        context['trade_type'] = request.GET['trade_type']
         context['product_type'] = request.GET['product_type']
+
+        if request.GET['product_type'] == "e_bike":
+            p_form = createBikeForm()
 
     if request.method == 'POST':
         p_form = createProductForm(request.POST, request.FILES)

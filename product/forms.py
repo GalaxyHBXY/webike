@@ -19,7 +19,7 @@ class createProductForm(forms.ModelForm):
 class createBikeForm(forms.ModelForm):
     class Meta:
         model = Bike
-        fields = ['product_name', 'price', 'description', 'bike_size', 'bike_style', 'image']
+        fields = ['product_name', 'price', 'description', 'bike_size', 'bike_style', 'image','is_rent']
 
     def __init__(self, *args, **kwargs):
         super(createBikeForm, self).__init__(*args, **kwargs)
