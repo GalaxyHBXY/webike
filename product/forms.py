@@ -24,7 +24,7 @@ class createBikeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(createBikeForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            if visible.name != "image":
+            if visible.name != "image" and visible.name != "is_rent":
                 visible.field.widget.attrs['class'] = 'form-control'
 
 
