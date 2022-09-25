@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Post Product Success!</title>
-    <h1>You product has been posted successfully</h1>
-    <a href="{% url 'merchant_home' %}"><button>Go Back to home page</button></a>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div style="text-align: center">
 
-</head>
-<body>
+        <div style="color: black">
+            <h1> You product has been posted successfully </h1>
+            <div class="text-center">
+                <img style="max-width: 25%; height: auto; " src="{% static 'img/successful.png' %}" >
+            </div>
+            <a href="{% url 'merchant_home' %}"><button type="button" class="btn btn-primary">Go back to homepage</button></a>
+        </div>
+    </div>>
 
-</body>
-</html>
+{% endblock content %}
