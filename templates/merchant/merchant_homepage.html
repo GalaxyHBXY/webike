@@ -26,11 +26,11 @@
                                     Phone: {{ merchant.user.phone }}
                                 </strong>
                             </p>
-                            <p>
-                                <a href="/user/profile">
-                                    <button class="btn btn-info">Modify Personal Information</button>
-                                </a>
-                            </p>
+{#                            <p>#}
+{#                                <a href="/user/profile">#}
+{#                                    <button class="btn btn-info">Modify Personal Information</button>#}
+{#                                </a>#}
+{#                            </p>#}
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                             <button class="btn btn-light" id="select-btn" onclick="selectCancelToggle()">Select
                             </button>
                             <button class="btn btn-danger d-none" id="delete-btn">Delete</button>
-                            <button class="btn btn-secondary d-none" id="cancel-btn" onclick="">
+                            <button class="btn btn-secondary d-none" id="cancel-btn" onclick="toggleclose()">
                                 Cancel
                             </button>
                         </div>
@@ -197,6 +197,21 @@
             const checkBoxes = document.getElementsByClassName('product-checkbox');
             for (let c of checkBoxes) {
                 c.checked = true;
+            }
+        }
+
+        function toggleclose() {
+            const checkBoxes = document.getElementsByClassName('product-checkbox');
+            const selectAllBtn = document.getElementById('select-all-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const deleteBtn = document.getElementById('delete-btn');
+            const selectBtn = document.getElementById('select-btn');
+            let items = [selectAllBtn, cancelBtn, deleteBtn, selectBtn];
+            for (let c of checkBoxes) {
+                items.push(c);
+            }
+            for (let i of items) {
+                i.classList.toggle('d-none');
             }
         }
     </script>
