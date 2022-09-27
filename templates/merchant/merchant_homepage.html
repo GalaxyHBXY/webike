@@ -138,13 +138,13 @@
                     <div>
                         <div class="row m-0 d-flex justify-content-xs-center justify-content-sm-start">
                             {% for p in products %}
-                                <div class="col-12 col-sm-6 col-md-4 mt-3 p-0">
+                                <div class="col-12 col-sm-6 col-md-4 mt-3 p-0 align-items-stretch">
                                     <input type="checkbox" id="{{ p.id }}-checkbox" class="product-checkbox d-none" on>
                                     <div class="card">
                                         <div style="position: relative;" class="overlay_container"
                                              onclick="window.location.href='{% url 'product_detail' p.id %}'">
                                             <img src="{{ p.image.url }}" class="card-img-top img-fluid overlay_img"
-                                                 alt="...">
+                                                 alt="..." style="object-fit: cover; aspect-ratio: 16/9">
                                             <p class="overlay_text text-light text-uppercase w-100"
                                                style="position: absolute;
                                                top: 50%;
@@ -214,5 +214,7 @@
                 i.classList.toggle('d-none');
             }
         }
+
     </script>
+
 {% endblock content %}

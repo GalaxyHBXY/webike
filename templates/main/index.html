@@ -60,7 +60,7 @@
                         <div style="position: relative;" class="overlay_container"
                              onclick="window.location.href='{% url 'product_detail' p.id %}'">
                             <img src="{{ p.image.url }}" class="card-img-top img-fluid overlay_img"
-                                 alt="...">
+                                 alt="..." style="object-fit: cover; aspect-ratio: 16/9">
                             <p class="overlay_text text-light text-uppercase w-100"
                                style="position: absolute;
                                top: 50%;
