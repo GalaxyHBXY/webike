@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from main.views import index
+from main.views import index, wesellers, werenters, webikers
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from user.views import user_login, user_logout, user_signup, reset_password
 from django.conf.urls.static import static
@@ -33,7 +33,10 @@ urlpatterns = [
     path('merchant/', include('merchant.urls')),
     path('product/', include('product.urls')),
     path('reset_password/', reset_password, name="reset_password"),
-    path('pay',include('payments.urls')),
+    path('pay', include('payments.urls')),
+    path('webikers', webikers, name="webikers"),
+    path('wesellers', wesellers, name="wesellers"),
+    path('werenters', werenters, name="werenters"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
