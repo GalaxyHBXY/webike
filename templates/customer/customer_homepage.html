@@ -88,7 +88,13 @@
                                     </table>
                                 </div>
                                 <div class="text-right p-3">
-                                    <button class="btn btn-outline-secondary mr-3">Contact Merchant</button>
+                                    <button class="btn btn-outline-secondary mr-3"
+                                            data-toggle="modal"
+                                            data-target="#exampleModal"
+                                            data-merchant-name="merchant1"
+                                            data-merchant-phone="12123133"
+                                            data-merchant-email="xxx@gmail.com">Contact Merchant
+                                    </button>
                                     <button class="btn btn-outline-info">View Details</button>
                                 </div>
                             </div>
@@ -126,9 +132,40 @@
                                     </table>
                                 </div>
                                 <div class="text-right p-3">
-                                    <button class="btn btn-outline-secondary mr-3">Contact Merchant</button>
+                                    <button class="btn btn-outline-secondary mr-3"
+                                            data-toggle="modal"
+                                            data-target="#exampleModal"
+                                            data-merchant-name="merchant2"
+                                            data-merchant-phone="56465456"
+                                            data-merchant-email="hello@gmail.com">Contact Merchant
+                                    </button>
                                     <button class="btn btn-outline-info">View Details</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Contact</h5>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <h6>Phone:</h6>
+                                        <a id="modal-phone"></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Email:</h6>
+                                        <a id="modal-email"></a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -137,4 +174,20 @@
         </div>
     </div>
 {% endblock content %}
+{% block javascript %}
+    <script>
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); // Button that triggered the modal
+            const merchant = button.data('merchant-name'); // Extract info from data-* attributes
+            const email = button.data('merchant-email'); // Extract info from data-* attributes
+            const phone = button.data('merchant-phone'); // Extract info from data-* attributes
+            const modal = $(this);
+            modal.find('.modal-title').text('Contact ' + merchant)
+            modal.find('#modal-phone').text(phone)
+            modal.find('#modal-email').text(email)
+            modal.find('#modal-phone').attr("href", 'tel:' + phone)
+            modal.find('#modal-email').attr("href", 'mailto:' + email)
+        })
+    </script>
+{% endblock javascript %}
 
