@@ -1,19 +1,39 @@
 {% extends "base.html" %}
+{% block css %}
+    <style>
+        td:not(:last-child) {
+            white-space: nowrap;
+        }
+
+        td:last-child {
+            width: 100%;
+        }
+
+        td {
+            word-break: break-word;
+        }
+    </style>
+{% endblock css %}
 {% block content %}
-    <div class="container-fluid px-0 d-flex h-100 main-sec" style="min-height: 50vh;">
-        <div class="row d-flex justify-content-between h-100 m-0 py-4">
-            <div class="col-12 col-lg-6">
-                <img src="{{ product.image.url }}" class="card mx-auto img-fluid img-thumbnail" alt="product image"
-{#                     style="object-fit: cover; aspect-ratio: 16/9">
+    <div class="container-fluid px-0 h-100 main-sec" style="min-height: 50vh;">
+        <div class="row d-flex justify-content-between h-100 m-0 py-4 w-100 mx-auto" style="max-width: 1800px;">
+            <div class="col-12 col-lg-6 col-xl-5 p-0 pr-xl-2">
+                <img src="{{ product.image.url }}" class="card img-fluid img-thumbnail" alt="product image"
+                     style="object-fit: cover; aspect-ratio: 16/9; cursor: zoom-in;" data-toggle="modal"
+                     data-target="#exampleModal">
             </div>
-            <div class="col-12 col-lg-6" style="word-break: break-all;">
+
+            <div class="col-12 col-lg-6 col-xl-7" style="word-break: break-all;">
                 <h2 class="text-dark mb-0">
                     {{ product.product_name }}
                 </h2>
                 <p class="text-muted">Yamaha</p>
                 <p class="text-right">
                     {{ product.address }}
-                    <button class="btn btn-outline-info" onclick="window.open('https://www.google.com/maps/search/{{ product.address.lat }}+{{ product.address.lng }}')">Search on map</button>
+                    <button class="btn btn-outline-info ml-2"
+                            onclick="mapSearch()">
+                        Search on map
+                    </button>
                 </p>
                 {% if is_bike %}
                     <p class="text-muted mb-1 d-inline-block">Size: {{ product.bike_size }}</p>
@@ -35,23 +55,65 @@
                         <button class="btn btn-outline-dark js-btn-plus" type="button">&plus;</button>
                     </div>
                 </div>
-            {% if is_bike %}
-
-                {% if product.is_rent %}
-{#                    <span hidden id="product_id">{{product.id}}</span>>#}
-{#                    <button class="btn btn-info mt-2" id="book-button" onclick="book()">Book Now</button>#}
+                {% if is_bike and product.is_rent %}
                     <button class="btn btn-info mt-2" id="checkout-button">Book Now</button>
                 {% else %}
                     <button class="btn btn-info mt-2" id="checkout-button">Buy Now</button>
                 {% endif %}
-            {% else %}
-                <button class="btn btn-info mt-2" id="checkout-button">Buy Now</button>
-            {% endif %}
             </div>
+        </div>
+        <!-- modal that displays the zoomed image -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                style="outline: none;">
+                            <p style="font-size: 35px; line-height: 20px;" class="text-danger d-inline-block">
+                                &times;</p>
+                        </button>
+                        <img src="{{ product.image.url }}" class="card img-fluid img-thumbnail" alt="product image">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 mx-auto m-0" style="max-width: 1800px;">
+            <h4 class="text-dark">Specifications</h4>
+            <table class="table table-bordered" style="max-width: 1000px;">
+                <tbody>
+                <tr>
+                    <th scope="row">Brand</th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">Weight</th>
+                    <td>xxx</td>
+                </tr>
+                <tr>
+                    <th scope="row">Power</th>
+                    <td>xxx</td>
+                </tr>
+                <tr>
+                    <th scope="row">Long Description Test</th>
+                    <td>
+                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <span hidden id="email">{{ request.user.email }}</span>
-
+{% endblock content %}
+{% block javascript %}
+    <script>
+        function mapSearch(location) {
+            let url = '{{ product.address.formatted_address }}';
+            url = url.replace('/', '%2F')
+            window.open('https://www.google.com/maps/search/' + url)
+        }
+    </script>
     <script src="https://js.stripe.com/v3/"></script>
     <script type="text/javascript">
         // Create an instance of the Stripe object with your publishable API key
@@ -75,7 +137,7 @@
                 body: JSON.stringify(
                     {
                         email: email,
-                        quantity:quantity
+                        quantity: quantity
                     },
                 )
             })
@@ -98,4 +160,4 @@
                 });
         });
     </script>
-{% endblock content %}
+{% endblock javascript %}
