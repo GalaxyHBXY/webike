@@ -59,12 +59,11 @@ class Product(models.Model):
     image = models.ImageField(null=False, blank=False, upload_to='media/product_pics', verbose_name='product_image',
                               validators=[validators.file_size_limit])
 
-
     class Status(models.TextChoices):
-        AVALIABLE = ('AVALIABLE', 'AVALIABLE')
-        UNAVAIABLE = ('UNAVALIABLE', 'UNAVALIABLE')
+        AVAILABLE = ('AVAILABLE', 'AVAILABLE')
+        UNAVAILABLE = ('UNAVAILABLE', 'UNAVAILABLE')
 
-    status = models.CharField(max_length=11, choices=Status.choices, default=Status.AVALIABLE, null=False,
+    status = models.CharField(max_length=11, choices=Status.choices, default=Status.AVAILABLE, null=False,
                               blank=False, verbose_name="status")
     stock = models.IntegerField(default=1, validators=[MinValueValidator(0)])
 
@@ -93,4 +92,3 @@ class Bike(Product):
                                   verbose_name="Style")
 
     is_rent = models.BooleanField(default=False, verbose_name="This product is for rent")
-
