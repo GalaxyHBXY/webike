@@ -26,12 +26,13 @@ class OrderDetail(models.Model):
         on_delete=models.PROTECT
     )
 
-    quality = models.IntegerField(
+    quantity = models.IntegerField(
         validators=[MinValueValidator(1)]
     )
 
     stripe_payment_intent = models.CharField(
-        max_length=200
+        max_length=200,
+        null=True
     )
 
     # This field can be changed as status
@@ -51,6 +52,15 @@ class OrderDetail(models.Model):
     notes = models.CharField(
         default="",
         max_length=256
+    )
+
+    class Mode(models.TextChoices):
+        payment = ('PAYMENT','PAYMENT')
+        subscription = ('SUBSCRIPTION','SUBSCRIPTION')
+
+    mode = models.CharField(
+        default=Mode.payment,
+        max_length= 12
     )
 
     def __str__(self):

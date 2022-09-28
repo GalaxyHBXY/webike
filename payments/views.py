@@ -3,8 +3,7 @@ from django.http.response import HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-
-
+from product.models import Bike
 from .models import *
 from django.views.generic import TemplateView
 import stripe
@@ -12,7 +11,6 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 
 # Create your views here.
@@ -23,39 +21,85 @@ def create_checkout_session(request, id):
     request_data = json.loads(request.body)
     product = get_object_or_404(Product, pk=id)
 
-    quality = request_data['quality']
+    quantity = request_data['quantity']
     # 有被篡改
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    checkout_session = stripe.checkout.Session.create(
-        # Customer Email is optional,
-        # It is not safe to accept email directly from the client side
-        customer_email=request_data['email'],
-        payment_method_types=['card'],
-        line_items=[
-            {
-                'price_data': {
-                    'currency': 'aud',
-                    'product_data': {
-                        'name': product.product_name,
+    checkout_session=None
+    mode = "payment"
+
+    if Bike.objects.get(pk=id) is not None and Bike.objects.get(pk=id).is_rent:
+        mode = "subscription"
+        checkout_session = stripe.checkout.Session.create(
+            # Customer Email is optional,
+            # It is not safe to accept email directly from the client side
+            customer_email=request_data['email'],
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'aud',
+                        'product_data': {
+                            'name': product.product_name,
+                        },
+                        "recurring" : {"interval": "week"},
+                        'unit_amount': int(product.price * 100),
+
                     },
-                    'unit_amount': int(product.price * 100),
-                },
-                'quantity': quality,
-            }
-        ],
-        mode='payment',
-        success_url=request.build_absolute_uri(
-            reverse('success')
-        ) + "?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url=request.build_absolute_uri(reverse('failed')),
-    )
+
+                    'quantity': quantity,
+                }
+            ],
+
+            mode='subscription',
+            success_url=request.build_absolute_uri(
+                reverse('success')
+            ) + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=request.build_absolute_uri(reverse('failed')),
+        )
+
+
+        # order = OrderDetail()
+        # order.customer = request.user
+        # order.product = product
+        # order.quality = quality
+        # order.stripe_payment_intent = checkout_session['payment_intent']
+        # order.save()
+        #
+        #
+        # return JsonResponse({'sessionId': checkout_session.id})
+    else:
+        checkout_session = stripe.checkout.Session.create(
+            # Customer Email is optional,
+            # It is not safe to accept email directly from the client side
+            customer_email=request_data['email'],
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'aud',
+                        'product_data': {
+                            'name': product.product_name,
+                        },
+                        'unit_amount': int(product.price * 100),
+                    },
+                    'quantity': quantity,
+                }
+            ],
+            mode='payment',
+            success_url=request.build_absolute_uri(
+                reverse('success')
+            ) + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=request.build_absolute_uri(reverse('failed')),
+        )
 
     order = OrderDetail()
     order.customer = request.user
     order.product = product
-    order.quality = quality
-    order.stripe_payment_intent = checkout_session['payment_intent']
+    order.quantity = quantity
+    order.stripe_payment_intent = checkout_session.stripe_id
+    print(checkout_session)
+    # order.mode = mode.upper()
     order.save()
 
 
@@ -73,17 +117,9 @@ class PaymentSuccessView(LoginRequiredMixin, TemplateView):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         session = stripe.checkout.Session.retrieve(session_id)
 
-        order = get_object_or_404(OrderDetail, stripe_payment_intent=session.payment_intent)
+        order = get_object_or_404(OrderDetail, stripe_payment_intent=session.stripe_id)
 
-        # if not order.has_paid:
-        #     current_user = request.user
-        #     product = order.product
-        #     current_user.credit_coin += product.price
-        #     current_user.free_coin += product.gift
-        #     current_user.save()
-        #     order.has_paid = True
-        #     order.save()
-        order.product.stock=order.product.stock-order.quality
+        order.product.stock=order.product.stock-order.quantity
         order.product.save()
         order.save()
 

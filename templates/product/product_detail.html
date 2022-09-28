@@ -29,13 +29,24 @@
                     <div class="input-group-prepend">
                         <button class="btn btn-outline-dark js-btn-minus" type="button">&minus;</button>
                     </div>
-                    <input type="number" class="form-control text-center" value="1" placeholder="" id="quality"
+                    <input type="number" class="form-control text-center" value="1" placeholder="" id="quantity"
                            aria-label="Example text with button addon" aria-describedby="button-addon1">
                     <div class="input-group-append">
                         <button class="btn btn-outline-dark js-btn-plus" type="button">&plus;</button>
                     </div>
                 </div>
+            {% if is_bike %}
+
+                {% if product.is_rent %}
+{#                    <span hidden id="product_id">{{product.id}}</span>>#}
+{#                    <button class="btn btn-info mt-2" id="book-button" onclick="book()">Book Now</button>#}
+                    <button class="btn btn-info mt-2" id="checkout-button">Book Now</button>
+                {% else %}
+                    <button class="btn btn-info mt-2" id="checkout-button">Buy Now</button>
+                {% endif %}
+            {% else %}
                 <button class="btn btn-info mt-2" id="checkout-button">Buy Now</button>
+            {% endif %}
             </div>
         </div>
     </div>
@@ -51,7 +62,7 @@
         checkoutButton.addEventListener('click', function () {
 
             var email = document.getElementById('email').innerHTML;
-            var quality = document.getElementById('quality').value;
+            var quantity = document.getElementById('quantity').value;
             if (email.length == 0) {
                 alert("Please enter your email address.");
                 return;
@@ -64,7 +75,7 @@
                 body: JSON.stringify(
                     {
                         email: email,
-                        quality:quality
+                        quantity:quantity
                     },
                 )
             })
