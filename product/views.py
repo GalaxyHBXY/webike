@@ -4,9 +4,8 @@ from django.shortcuts import render, redirect
 from main.views import fail
 from merchant.models import Merchant
 from product.forms import createProductForm, createAddressForm, createBikeForm
-from product.models import Product,Bike
+from product.models import Product, Bike
 from django.conf import settings
-
 
 
 # Create your views here.
@@ -97,7 +96,7 @@ def detail(request, id):
 
     context = {'product': product,
                'is_bike': is_bike,
-               'stripe_publishable_key':settings.STRIPE_PUBLISHABLE_KEY
+               'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY
                }
 
     return render(request, template_name="product/product_detail.html", context=context)
@@ -119,33 +118,69 @@ def product_search(request):
 
 
 def product_filter(request):
-    low_price = request.GET.get("low_price")
-    high_price = request.GET.get("high_price")
+    # low_price = request.GET.get("low_price")
+    # high_price = request.GET.get("high_price")
+    #
+    # location = request.GET.get("location")
+    # bike_size = request.GET.get("bike_size")
+    # style = request.GET.get("style")
+    #
+    # products = Product.objects.all()
+    #
+    # if low_price is not None and high_price is not None:
+    #     low_price = float(low_price)
+    #     high_price = float(high_price)
+    #     if high_price >= low_price >= 0:
+    #         products = products.filter(price__range=(low_price, high_price))
+    #     else:
+    #         return fail(request, {"description": "Invalid price range"})
+    #
+    # products = products.filter(address__formatted_address__icontains=location)
+    #
+    # context = {"products": products}
 
-    location = request.GET.get("location")
-    bike_size = request.GET.get("bike_size")
-    style = request.GET.get("style")
+    size = request.POST.getlist("size")
+    style = request.POST.getlist("style")
+    brand = request.POST.getlist("brand")
 
     products = Product.objects.all()
+    bikes = Bike.objects.all()
+    final_set = []
 
-    if low_price is not None and high_price is not None:
-        low_price = float(low_price)
-        high_price = float(high_price)
-        if high_price >= low_price >= 0:
-            products = products.filter(price__range=(low_price, high_price))
+    for each in bikes:
+        if len(size) != 0 and len(style) != 0 and len(brand) != 0:
+            if each.bike_size.lower() in size and each.bike_style.lower() in style and each.bike_brand.lower() in brand:
+                final_set.append(each)
+        elif len(size) != 0 and len(style) != 0 and len(brand) == 0:
+            if each.bike_size.lower() in size and each.bike_style.lower() in style:
+                final_set.append(each)
+        elif len(size) != 0 and len(style) == 0 and len(brand) != 0:
+            if each.bike_size.lower() in size and each.bike_brand.lower() in brand:
+                final_set.append(each)
+        elif len(size) == 0 and len(style) != 0 and len(brand) != 0:
+            if each.bike_style.lower() in style and each.bike_brand.lower() in brand:
+                final_set.append(each)
+        elif len(size) == 0 and len(style) == 0 and len(brand) != 0:
+            if each.bike_brand.lower() in brand:
+                final_set.append(each)
+        elif len(size) != 0 and len(style) == 0 and len(brand) == 0:
+            print(each.bike_size.lower(), size)
+            if each.bike_size.lower() in size:
+                final_set.append(each)
+        elif len(size) == 0 and len(style) != 0 and len(brand) == 0:
+            if each.bike_style.lower() in style:
+                final_set.append(each)
         else:
-            return fail(request, {"description": "Invalid price range"})
+            final_set.append(each)
 
-    products = products.filter(address__formatted_address__icontains=location)
-
-    context = {"products": products}
+    context = {"products": final_set}
 
     return render(request, template_name="product/product_search_result.html", context=context)
 
-    # if bike_size!=None:
-    #     pass
-
-    # if style!=None:
-    #     pass
-
     pass
+
+
+def find_corresponding_product(bike, Products):
+    for each in Products:
+        if bike.product_name == each.product_name:
+            return each

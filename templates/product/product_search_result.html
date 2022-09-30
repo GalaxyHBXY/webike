@@ -7,7 +7,8 @@
     <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
         <div class="col-12 col-md-9 col-xl-3 p-0" style="min-width: 220px;" id="search-sec">
             <div class="p-1">
-                <form>
+                <form action="{% url 'product_filter' %}" method="post">
+                    {% csrf_token %}
                     <div class="input-group mb-2 m-0">
                         <input type="search" class="form-control rounded"/>
                         <button type="button" class="btn btn-outline-dark ml-1">
@@ -18,6 +19,9 @@
                             aria-expanded="false" aria-controls="collapseExample">
                         <span class="icon-filter"></span> Filter
                     </button>
+                    <button class="btn btn-outline-info" type="submit" data-toggle="collapse">
+                        Submit
+                    </button>
                     <div class="collapse py-2" id="filter">
                         <a class="mb-0 text-info" href="">Select All</a>
                         <a class="ml-2 mb-0 text-danger" href="">Select None</a>
@@ -25,19 +29,19 @@
                             <div class="col-6 col-md-4 col-xl-12 mt-3">
                                 <p class="mb-0" style="max-width: 150px;">Bike Size</p>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="small" id="Small" name="size">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Small
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="medium" id="Medium" name="size">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Medium
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="large" id="Large" name="size">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Large
                                     </label>
@@ -46,40 +50,40 @@
                             <div class="col-6 col-md-4 col-xl-12 mt-3">
                                 <p class="mb-0" style="max-width: 150px;">Style</p>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="stylea" id="STYLEA" name="style">
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        Racing
+                                        STYLEA
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="styleb" id="STYLEB" name="style">
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        Road
+                                        STYLEB
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="stylec" id="STYLEC" name="style">
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        Mountain
+                                        STYLEC
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6 col-md-4 col-xl-12 mt-3">
                                 <p class="mb-0" style="max-width: 150px;">Brand</p>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="a" id="A" name="brand">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         A
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="b" id="B" name="brand">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         B
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="c" id="c" name="brand">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         C
                                     </label>
@@ -118,5 +122,6 @@
                 </div>
             {% endfor %}
         </div>
+
     </div>
 {% endblock content %}
