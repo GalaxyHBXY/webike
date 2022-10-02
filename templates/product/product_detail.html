@@ -129,12 +129,12 @@
                 alert("Please enter your email address.");
                 return;
             }
-            if (quality == 0){
+            if (quantity == 0){
                 alert("Number cannot be zero");
                 return;
             }
 
-            if (quality > {{ product.stock }}){
+            if (quantity > {{ product.stock }}){
                 alert("Insignificant stock");
                 return;
             }

@@ -27,7 +27,8 @@ def create_checkout_session(request, id):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     checkout_session=None
     mode = "payment"
-
+    if int(product.stock) < int(quantity) or quantity == 0:
+        return None
     if Bike.objects.get(pk=id) is not None and Bike.objects.get(pk=id).is_rent:
         mode = "subscription"
         checkout_session = stripe.checkout.Session.create(
