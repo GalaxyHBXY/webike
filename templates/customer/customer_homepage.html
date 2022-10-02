@@ -21,7 +21,7 @@
                                 <h5 class="text-secondary text-start mb-2 mt-0">Personal Information</h5>
                                 <p>
                                     <strong>
-                                        First Name: {{ user.customer.first_name }}
+                                        First Name: {{ user.customer.first_name }} {{ user.customer.user_id }}
                                     </strong>
                                 </p>
                                 <p>
@@ -48,11 +48,6 @@
                         <div class="row text-center my-4 mx-0">
                             <h4 class="text-dark">Order History</h4>
                         </div>
-                        {#                        <div class="row m-0 d-flex justify-content-center">#}
-                        {#                            <div class="alert alert-secondary mt-4 w-100 text-md-center text-start" role="alert">#}
-                        {#                                <p class="m-0">Your order history is empty</p>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
                         <div style="max-width: 800px;">
                             <div class="card d-flex flex-wrap mb-3">
                                 <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
@@ -173,6 +168,15 @@
             </div>
         </div>
     </div>
+    <div>
+        <h1>
+            123
+        </h1>>
+    {% for order in orders %}
+        {{ order.id }} {{ order.customer.id }}
+    {% endfor %}
+
+    </div>>
 {% endblock content %}
 {% block javascript %}
     <script>

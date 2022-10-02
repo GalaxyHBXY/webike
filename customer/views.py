@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from customer.forms import CreateCustomerForm
 from user.forms import CreateUserForm
+from payments.models import OrderDetail
 
 
 # Create your views here.
@@ -10,7 +11,12 @@ from user.forms import CreateUserForm
 
 @login_required
 def home(request):
-    return render(request, template_name="customer/customer_homepage.html")
+    context = {}
+    list = []
+    for each in OrderDetail.objects.all():
+        list.append(each)
+    context['orders'] = list
+    return render(request, template_name="customer/customer_homepage.html",context=context)
 
 
 def signup(request):
