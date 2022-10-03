@@ -43,17 +43,22 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="col-lg-8 mt-3 mt-lg-0 mx-auto" style="max-width: 1400px!important;">
                     <div class="py-3 job_info_card h-100" style="background-color: white;border-radius: 10px;">
                         <div class="row text-center my-4 mx-0">
                             <h4 class="text-dark">Order History</h4>
                         </div>
                         <div style="max-width: 800px;">
-                            <div class="card d-flex flex-wrap mb-3">
+                            {% for order in orders %}
+                                {% if  order.customer_id == user.id %}
+
+                                    <div class="card d-flex flex-wrap mb-3">
                                 <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
                                      style="background-color: #17a2b8;">
-                                    <p class="d-inline-block mb-0 font-italic">2022-07-09</p>
-                                    <p class="d-inline-block ml-auto mb-0">Order ID: 2138912377118123</p>
+                                    <p class="d-inline-block mb-0 font-italic">{{ order.created_on }}</p>
+                                    <p class="d-inline-block ml-auto mb-0">Order ID: {{ order.id }}</p>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table m-0">
@@ -68,16 +73,16 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <img src="https://cdn.shopify.com/s/files/1/0908/0796/products/MIDOPROBlack_600x.jpg?v=1635421845"#}
+                                                <img src=" static {{ order.product.image }} "
                                                      class="mr-3 product_img"
                                                      alt="product_image"
                                                      width="160"
                                                      height="90"
                                                      style="object-fit: cover; aspect-ratio: 16/9;">
                                             </td>
-                                            <td>This is a long product name</td>
-                                            <td>300</td>
-                                            <td>x2</td>
+                                            <td>{{ order.product.product_name }}</td>
+                                            <td>{{ order.product.price }}</td>
+                                            <td>x{{ order.quantity }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -86,57 +91,16 @@
                                     <button class="btn btn-outline-secondary mr-3"
                                             data-toggle="modal"
                                             data-target="#exampleModal"
-                                            data-merchant-name="merchant1"
-                                            data-merchant-phone="12123133"
-                                            data-merchant-email="xxx@gmail.com">Contact Merchant
+                                            data-merchant-name={{ order.product.merchant.merchant_name }}
+                                            data-merchant-phone={{ order.product.merchant.user.phone }}
+                                            data-merchant-email={{ order.product.merchant.user.email }}>Contact Merchant
                                     </button>
                                     <button class="btn btn-outline-info">View Details</button>
                                 </div>
                             </div>
-                            <div class="card d-flex flex-wrap mb-3">
-                                <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
-                                     style="background-color: #17a2b8;">
-                                    <p class="d-inline-block mb-0 font-italic">2022-07-09</p>
-                                    <p class="d-inline-block ml-auto mb-0">Order ID: 2138912377118123</p>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table m-0">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" style="width: 80px;">Product</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Quantity</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <img src="https://cdn.shopify.com/s/files/1/0908/0796/products/MIDOPROBlack_600x.jpg?v=1635421845"#}
-                                                     class="mr-3 product_img"
-                                                     alt="product_image"
-                                                     width="160"
-                                                     height="90"
-                                                     style="object-fit: cover; aspect-ratio: 16/9;">
-                                            </td>
-                                            <td>This is a long product name</td>
-                                            <td>300</td>
-                                            <td>x2</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="text-right p-3">
-                                    <button class="btn btn-outline-secondary mr-3"
-                                            data-toggle="modal"
-                                            data-target="#exampleModal"
-                                            data-merchant-name="merchant2"
-                                            data-merchant-phone="56465456"
-                                            data-merchant-email="hello@gmail.com">Contact Merchant
-                                    </button>
-                                    <button class="btn btn-outline-info">View Details</button>
-                                </div>
-                            </div>
+                                {% endif %}
+                            {% endfor %}
+
                         </div>
                     </div>
                 </div>
@@ -168,15 +132,7 @@
             </div>
         </div>
     </div>
-    <div>
-        <h1>
-            123
-        </h1>>
-    {% for order in orders %}
-        {{ order.id }} {{ order.customer.id }}
-    {% endfor %}
 
-    </div>>
 {% endblock content %}
 {% block javascript %}
     <script>
