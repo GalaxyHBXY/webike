@@ -73,7 +73,7 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <img src=" static {{ order.product.image }} "
+                                                <img src=" {{ order.product.image.url }} "
                                                      class="mr-3 product_img"
                                                      alt="product_image"
                                                      width="160"
@@ -95,7 +95,10 @@
                                             data-merchant-phone={{ order.product.merchant.user.phone }}
                                             data-merchant-email={{ order.product.merchant.user.email }}>Contact Merchant
                                     </button>
-                                    <button class="btn btn-outline-info">View Details</button>
+                                    <button class="btn btn-outline-info">
+                                        <a href="{% url "product_detail" order.product.id %}"> View Details
+                                        </a>
+                                    </button>
                                 </div>
                             </div>
                                 {% endif %}
