@@ -180,13 +180,33 @@ def product_search(request):
 
 def product_filter(request):
     context = {}
-    size = [s.upper() for s in request.POST.getlist("size")]
-    style = request.POST.getlist("style")
-    brand = request.POST.getlist("brand")
     products = Bike.objects.all()
-    products = products.intersection(Bike.objects.filter(bike_size__in=size))
-    context['products'] = products
-    return render(request, template_name="product/product_search_result.html", context=context)
+
+    size = [s.upper() for s in request.POST.getlist("size")]
+    style = [s.upper() for s in request.POST.getlist("style")]
+    brand = [s.upper() for s in request.POST.getlist("brand")]
+
+    if len(size) == 0:
+        size = ["SMALL", "MEDIUM", "LARGE"]
+    if len(style) == 0:
+        style = ["STYLEA", "STYLEB", "STYLEC"]
+    if len(brand) == 0:
+        brand = ["A", "B", "C"]
+
+    if len(size) == 0 and len(style) == 0 and len(brand) == 0:
+        context['products'] = products
+        return render(request, template_name="product/product_search_result.html", context=context)
+
+    else:
+        print(size, style, brand)
+        products = products.intersection(Bike.objects.filter(bike_size__in=size))
+        print(products)
+        products = products.intersection(Bike.objects.filter(bike_style__in=style))
+        print(products)
+        products = products.intersection(Bike.objects.filter(bike_brand__in=brand))
+        print(products)
+        context['products'] = products
+        return render(request, template_name="product/product_search_result.html", context=context)
 
 
 def find_corresponding_product(bike, Products):

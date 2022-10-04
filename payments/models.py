@@ -30,9 +30,8 @@ class OrderDetail(models.Model):
         validators=[MinValueValidator(1)]
     )
 
-    stripe_payment_intent = models.CharField(
-        max_length=200,
-        null=True
+    session_id = models.CharField(
+        max_length=70
     )
 
     # This field can be changed as status
@@ -64,4 +63,4 @@ class OrderDetail(models.Model):
     )
 
     def __str__(self):
-        return self.stripe_payment_intent
+        return self.session_id
