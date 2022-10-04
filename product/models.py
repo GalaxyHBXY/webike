@@ -98,5 +98,12 @@ class Bike(Product):
 
     bike_brand = models.CharField(max_length=200, choices=Brand.choices, default=Brand.A, null=False, blank=False,
                                   verbose_name="Brand")
+    # maybe need more choices for power/weight
+    bike_power = models.CharField(max_length=200,  default=None, null=False, blank=False,
+                                  verbose_name="Power")
+    bike_weight = models.CharField(max_length=200,  default=None, null=False, blank=False,
+                                  verbose_name="Weight")
+    bike_longDescription = models.CharField(max_length=200,  null=False, blank=False,
+                                  verbose_name="LongDescription")
 
     is_rent = models.BooleanField(default=False, verbose_name="This product is for rent")

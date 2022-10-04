@@ -34,6 +34,24 @@
 
                             <div class="form-outline mb-4">
                                 <label class="form-label font-weight-bold"
+                                       for="{{ u_form.phone.id_for_label }}">{{ u_form.phone.label }}</label>
+                                {% if u_form.phone.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger" id="{{ u_form.phone.id_for_label }}_error">
+                                    {% if u_form.phone.errors %}
+                                        {{ u_form.phone.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ u_form.phone }}
+                                {% if u_form.phone.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ u_form.phone.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
                                        for="{{ m_form.merchant_name.id_for_label }}">{{ m_form.merchant_name.label }}</label>
                                 {% if m_form.merchant_name.field.required %}
                                     <span class="text-danger">*</span>
