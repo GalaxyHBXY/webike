@@ -11,12 +11,8 @@ from payments.models import OrderDetail
 
 @login_required
 def home(request):
-    context = {}
-    list = []
-    for each in OrderDetail.objects.all():
-        list.append(each)
-    context['orders'] = list
-    return render(request, template_name="customer/customer_homepage.html",context=context)
+    context = {'orders': OrderDetail.objects.filter(customer=request.user)}
+    return render(request, template_name="customer/customer_homepage.html", context=context)
 
 
 def signup(request):

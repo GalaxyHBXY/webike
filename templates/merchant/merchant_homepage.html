@@ -1,145 +1,295 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-    <div class="container-fluid main-sec" style="min-height: 75vh;">
-        <div class="row m-0 mx-auto" style="padding: 0; margin:0; width: 100%; max-width: 1800px;">
-            <div class="col-lg-4 mx-auto" style="max-width: 400px;">
-                <div class="py-3 text-center" style="background-color: white; border-radius: 10px;">
-                    <img class="profile-img" src="/media/profile_pics/default.png" width="100" height="100">
-                    <div class="mt-3">
-                        <div class="border-bottom mx-auto" style="width: 90%;">
-                            <p>
-                                <i class="name"></i>
-                                <strong>Name: {{ merchant.merchant_name }}</strong>
-
-                            </p>
-                        </div>
-                        <div class="mx-auto mt-3" style="width: 90%;">
-                            <p class="text-secondary text-start mb-2">Personal Information</p>
-                            <p>
-                                <strong>
-                                    Email: {{ merchant.user.email }}
-                                </strong>
-                            </p>
-                            <p>
-                                <strong>
-                                    Phone: {{ merchant.user.phone }}
-                                </strong>
-                            </p>
+{#{% extends "base.html" %}#}
+{#{% load static %}#}
+{#{% block content %}#}
+{#    <div class="container-fluid main-sec" style="min-height: 75vh;">#}
+{#        <div class="row m-0 mx-auto" style="padding: 0; margin:0; width: 100%; max-width: 1800px;">#}
+{#            <div class="col-lg-4 mx-auto" style="max-width: 400px;">#}
+{#                <div class="py-3 text-center" style="background-color: white; border-radius: 10px;">#}
+{#                    <img class="profile-img" src="/media/profile_pics/default.png" width="100" height="100">#}
+{#                    <div class="mt-3">#}
+{#                        <div class="border-bottom mx-auto" style="width: 90%;">#}
+{#                            <p>#}
+{#                                <i class="name"></i>#}
+{#                                <strong>Name: {{ merchant.merchant_name }}</strong>#}
+{#                            </p>#}
+{#                        </div>#}
+{#                        <div class="mx-auto mt-3" style="width: 90%;">#}
+{#                            <p class="text-secondary text-start mb-2">Personal Information</p>#}
+{#                            <p>#}
+{#                                <strong>#}
+{#                                    Email: {{ merchant.user.email }}#}
+{#                                </strong>#}
+{#                            </p>#}
+{#                            <p>#}
+{#                                <strong>#}
+{#                                    Phone: {{ merchant.user.phone }}#}
+{#                                </strong>#}
+{#                            </p>#}
 {#                            <p>#}
 {#                                <a href="/user/profile">#}
 {#                                    <button class="btn btn-info">Modify Personal Information</button>#}
 {#                                </a>#}
 {#                            </p>#}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8 mt-3 mt-lg-0 mx-auto" style="max-width: 1400px!important;">
-                <div class="py-3 job_info_card h-100">
-                    <div class="row text-md-center text-center mt-4 m-0">
-                        <h4>Merchant Homepage</h4>
-                    </div>
-                    <div class="d-block d-sm-flex justify-content-between">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
-                            Add New Product
-                        </button>
-
-                        <form method="get" action="{% url 'add_new_product' %}" id="add_new_product_form">
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">What do you want to add?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-{#                                            <fieldset id="group1">#}
-{#                                                <p class="mb-0">I want to...</p>#}
-{#                                                <div class="form-check">#}
-{#                                                    <input class="form-check-input" type="radio" name="trade_type"#}
-{#                                                           id="flexRadioDefault1" checked value="sell">#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-8 mt-3 mt-lg-0 mx-auto" style="max-width: 1400px!important;">#}
+{#                <div class="py-3 job_info_card h-100">#}
+{#                    <div class="row text-md-center text-center mt-4 m-0">#}
+{#                        <h4>Merchant Homepage</h4>#}
+{#                    </div>#}
+{#                    <div class="d-block d-sm-flex justify-content-between">#}
+{#                        <!-- Button trigger modal -->#}
+{#                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">#}
+{#                            Add New Product#}
+{#                        </button>#}
 {##}
-{#                                                    <label class="form-check-label" for="flexRadioDefault1">#}
-{#                                                        Sell a product#}
+{#                        <form method="get" action="{% url 'add_new_product' %}" id="add_new_product_form">#}
+{##}
+{#                            <!-- Modal -->#}
+{#                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"#}
+{#                                 aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#                                <div class="modal-dialog" role="document">#}
+{#                                    <div class="modal-content">#}
+{#                                        <div class="modal-header">#}
+{#                                            <h5 class="modal-title" id="exampleModalLabel">What do you want to add?</h5>#}
+{#                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                                <span aria-hidden="true">&times;</span>#}
+{#                                            </button>#}
+{#                                        </div>#}
+{#                                        <div class="modal-body">#}
+{#                                            <fieldset id="group2">#}
+{#                                                <p class="mb-0">The product is...</p>#}
+{#                                                <div class="form-check">#}
+{#                                                    <input class="form-check-input" type="radio" name="product_type"#}
+{#                                                           id="product_type_e_bike" checked value="e_bike">#}
+{#                                                    <label for="product_type_e_bike" class="form-check-label">#}
+{#                                                        E-Bike#}
 {#                                                    </label>#}
 {#                                                </div>#}
 {#                                                <div class="form-check">#}
-{#                                                    <input class="form-check-input" type="radio" name="trade_type"#}
-{#                                                           id="flexRadioDefault2" value="rent">#}
-{##}
-{#                                                    <label class="form-check-label" for="flexRadioDefault2">#}
-{#                                                        Rent a product#}
+{#                                                    <input class="form-check-input" type="radio" name="product_type"#}
+{#                                                           id="product_type_e_bike_accessories" value="accessories">#}
+{#                                                    <label class="form-check-label"#}
+{#                                                           for="product_type_e_bike_accessories">#}
+{#                                                        E-Bike Accessories#}
 {#                                                    </label>#}
 {#                                                </div>#}
 {#                                            </fieldset>#}
-{#                                            <br>#}
-                                            <fieldset id="group2">
-                                                <p class="mb-0">The product is...</p>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="product_type"
-                                                           id="product_type_e_bike" checked value="e_bike">
-                                                    <label class="form-check-label" for="product_type_e-bike">
+{#                                        </div>#}
+{#                                        <div class="modal-footer">#}
+{#                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close#}
+{#                                            </button>#}
+{#                                            <button type="submit" class="btn btn-info">#}
+{#                                                Confirm#}
+{#                                            </button>#}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </form>#}
+{##}
+{#                        <div class="mt-3 m-sm-0">#}
+{#                            <button class="btn btn-dark d-none" id="select-all-btn" onclick="selectAll()">Select All#}
+{#                            </button>#}
+{#                            <button class="btn btn-light" id="select-btn" onclick="selectCancelToggle()">Select#}
+{#                            </button>#}
+{#                            <button class="btn btn-danger d-none" id="delete-btn">Delete</button>#}
+{#                            <button class="btn btn-secondary d-none" id="cancel-btn" onclick="toggleClose()">#}
+{#                                Cancel#}
+{#                            </button>#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{##}
+{#                    {% if not products %}#}
+{#                        <div class="d-flex justify-content-center">#}
+{#                            <div class="alert alert-secondary mt-4 w-100 text-md-center text-start" role="alert">#}
+{#                                <p class="m-0">You do not have any product, please add a new product.</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{##}
+{#                    <div class="border">#}
+{#                        <div class="row m-0 d-flex justify-content-xs-center justify-content-sm-start">#}
+{#                            {% for p in products %}#}
+{#                                <div class="col-12 col-sm-6 col-md-4 mt-3 p-0 align-items-stretch">#}
+{#                                    <label for="{{ p.id }}-checkbox"></label>#}
+{#                                    <input type="checkbox" id="{{ p.id }}-checkbox" class="product-checkbox d-none">#}
+{#                                    <div class="card">#}
+{#                                        <div style="position: relative;" class="overlay_container"#}
+{#                                             onclick="window.location.href='{% url 'product_detail' p.id %}'">#}
+{#                                            <img src="{{ p.image.url }}" class="card-img-top img-fluid overlay_img"#}
+{#                                                 alt="..." style="object-fit: cover; aspect-ratio: 16/9">#}
+{#                                            <p class="overlay_text text-light text-uppercase w-100"#}
+{#                                               style="position: absolute;#}
+{#                                               top: 50%;#}
+{#                                               left: 50%;#}
+{#                                               transform: translate(-50%,-50%);#}
+{#                                               text-align: center">#}
+{#                                                Click to View Details#}
+{#                                            </p>#}
+{#                                        </div>#}
+{#                                        <div class="card-body p-2">#}
+{#                                            <h5 class="card-title m-0">#}
+{#                                                {{ p.product_name }}#}
+{#                                            </h5>#}
+{#                                            <p class=" card-text text-uppercase text-left m-0">#}
+{#                                                Price: ${{ p.price }}#}
+{#                                            </p>#}
+{#                                            <p class=" card-text text-uppercase text-left m-0">#}
+{#                                                Stock: {{ p.stock }}#}
+{#                                            </p>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                    <br>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
-                                                        E-Bike
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="product_type"
-                                                           id="product_type_e_bike_accessories" value="accessories">
-                                                    <label class="form-check-label"
-                                                           for="product_type_e_bike_accessories">
 
-                                                        E-Bike Accessories
-                                                    </label>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                            </button>
-                                            <button type="submit" class="btn btn-info">
-                                                Confirm
-                                            </button>
+{#{% endblock content %}#}
 
+
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+    <style>
+        @media (max-width: 575px) {
+            .product_img {
+                width: 80px !important;
+                height: 45px !important;
+            }
+        }
+    </style>
+{% endblock css %}
+{% block content %}
+    <div class="container-fluid px-0 h-100 main-sec" style="min-height: 50vh;">
+        <div class="row d-flex justify-content-between h-100 m-0 py-4 w-100 mx-auto" style="max-width: 1800px;">
+            <div class="row m-0 mx-auto" style="padding: 0; margin:0; width: 100%; max-width: 1800px;">
+                <!-- Company Information -->
+                <div class="col-lg-4 mx-auto" style="max-width: 400px;">
+                    <div class="py-3 text-center" style="background-color: white; border-radius: 10px;">
+                        <div class="mt-3">
+                            <div class="mx-auto mt-3 border rounded p-5" style="width: 90%;">
+                                <h5 class="text-secondary text-start mb-2 mt-0">Company Information</h5>
+                                <p>
+                                    <strong>
+                                        Name: {{ merchant.merchant_name }}
+                                    </strong>
+                                </p>
+                                <p>
+                                    <strong>
+                                        Email: {{ merchant.user.email }}
+                                    </strong>
+                                </p>
+                                <p>
+                                    <strong>
+                                        Phone: {{ merchant.user.phone }}
+                                    </strong>
+                                </p>
+                                <p class="mb-0">
+                                    <a href="/user/profile">
+                                        <button class="btn btn-info">Information Settings</button>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Products & Orders -->
+                <div class="col-lg-8 mt-3 mt-lg-0 mx-auto" style="max-width: 1400px!important;">
+                    <!-- Products -->
+                    <div class="py-3 job_info_card">
+                        <div class="row text-center my-4 mx-0">
+                            <h4 class="text-dark">Your Products</h4>
+                        </div>
+                        <div class="d-block d-sm-flex justify-content-between">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
+                                Add New Product
+                            </button>
+                            <form method="get" action="{% url 'add_new_product' %}" id="add_new_product_form">
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">What do you want to
+                                                    add?</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <fieldset id="group2">
+                                                    <p class="mb-0">The product is...</p>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="product_type"
+                                                               id="product_type_e_bike" checked value="e_bike">
+                                                        <label for="product_type_e_bike" class="form-check-label">
+                                                            E-Bike
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="product_type"
+                                                               id="product_type_e_bike_accessories" value="accessories">
+                                                        <label class="form-check-label"
+                                                               for="product_type_e_bike_accessories">
+                                                            E-Bike Accessories
+                                                        </label>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="submit" class="btn btn-info">
+                                                    Confirm
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
 
-                        <div class="mt-3 m-sm-0">
-                            <button class="btn btn-dark d-none" id="select-all-btn" onclick="selectAll()">Select All
-                            </button>
-                            <button class="btn btn-light" id="select-btn" onclick="selectCancelToggle()">Select
-                            </button>
-                            <button class="btn btn-danger d-none" id="delete-btn">Delete</button>
-                            <button class="btn btn-secondary d-none" id="cancel-btn" onclick="toggleclose()">
-                                Cancel
-                            </button>
+                            <div class="mt-3 m-sm-0">
+                                <button class="btn btn-dark d-none" id="select-all-btn" onclick="selectAll()">Select All
+                                </button>
+                                <button class="btn btn-light" id="select-btn" onclick="selectCancelToggle()">Select
+                                </button>
+                                <button class="btn btn-danger d-none" id="delete-btn">Delete</button>
+                                <button class="btn btn-secondary d-none" id="cancel-btn" onclick="toggleClose()">
+                                    Cancel
+                                </button>
+                            </div>
+
                         </div>
 
-                    </div>
-
-                    {% if not products %}
-                        <div class="d-flex justify-content-center">
-                            <div class="alert alert-secondary mt-4 w-100 text-md-center text-start" role="alert">
-                                <p class="m-0">You do not have any product, please add a new product.</p>
+                        {% if not products %}
+                            <div class="d-flex justify-content-center">
+                                <div class="alert alert-secondary mt-4 w-100 text-md-center text-start" role="alert">
+                                    <p class="m-0">You do not have any product, please add a new product.</p>
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
 
-                    <div>
                         <div class="row m-0 d-flex justify-content-xs-center justify-content-sm-start">
                             {% for p in products %}
                                 <div class="col-12 col-sm-6 col-md-4 mt-3 p-0 align-items-stretch">
-                                    <input type="checkbox" id="{{ p.id }}-checkbox" class="product-checkbox d-none" on>
+                                    <label for="{{ p.id }}-checkbox"></label>
+                                    <input type="checkbox" id="{{ p.id }}-checkbox" class="product-checkbox d-none">
                                     <div class="card">
                                         <div style="position: relative;" class="overlay_container"
                                              onclick="window.location.href='{% url 'product_detail' p.id %}'">
@@ -170,12 +320,96 @@
                             {% endfor %}
                         </div>
                     </div>
-
                     <br>
+                    <!-- Orders -->
+                    <div class="py-3 job_info_card h-100" style="background-color: white;border-radius: 10px;">
+                        <div class="row text-center my-4 mx-0">
+                            <h4 class="text-dark">Orders</h4>
+                        </div>
+                        <div style="max-width: 800px;">
+                            <div class="card d-flex flex-wrap mb-3">
+                                <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
+                                     style="background-color: #17a2b8;">
+                                    <p class="d-inline-block mb-0 font-italic">Oct 5, 2022, 5:44 a.m.</p>
+                                    <p class="d-inline-block ml-auto mb-0">Order ID: 12321312313123</p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table m-0">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 140px;">Status</th>
+                                            <th scope="col" style="width: 80px;">Product</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Quantity</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                Incomplete
+                                                <span class="icon-close text-danger"></span>
+                                                <span class="icon-check text-success"></span>
+                                            </td>
+                                            <td>
+                                                <img src="https://cdn.shopify.com/s/files/1/0908/0796/products/MIDOPROBlack_600x.jpg?v=1635421845"
+                                                     class="mr-3 product_img"
+                                                     alt="product_image"
+                                                     width="160"
+                                                     height="90"
+                                                     style="object-fit: cover; aspect-ratio: 16/9;">
+                                            </td>
+                                            <td>A product name</td>
+                                            <td>80</td>
+                                            <td>x5</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-right p-3">
+                                    <!-- show this if only order status is incomplete -->
+                                    <button class="btn btn-outline-danger mr-3"
+                                            data-toggle="modal"
+                                            data-target="#confirmModal"
+                                            data-order="1">
+                                        Shipping Confirmation
+                                    </button>
+                                    <a href="">
+                                        <button class="btn btn-outline-info">
+                                            View Details
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Shipping Confirmation</h5>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="form-group text-danger">
+                                    By clicking confirm you are agreeing with our user agreement and guaranteeing that
+                                    all products in this order are shipped to your customer.
+                                </h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+{% endblock content %}
+{% block javascript %}
     <script>
         function selectCancelToggle() {
             const checkBoxes = document.getElementsByClassName('product-checkbox');
@@ -200,7 +434,7 @@
             }
         }
 
-        function toggleclose() {
+        function toggleClose() {
             const checkBoxes = document.getElementsByClassName('product-checkbox');
             const selectAllBtn = document.getElementById('select-all-btn');
             const cancelBtn = document.getElementById('cancel-btn');
@@ -216,5 +450,5 @@
         }
 
     </script>
+{% endblock javascript %}
 
-{% endblock content %}
