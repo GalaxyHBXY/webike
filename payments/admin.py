@@ -3,8 +3,8 @@ from .models import *
 
 
 class OrderDetails_Admin(admin.ModelAdmin):
-    list_display=('email','stripe_payment_intent','product','has_paid')
-    readonly_fields = ('stripe_payment_intent',)
+    list_display=('email','session_id','product','has_paid')
+    readonly_fields = ('session_id',)
 
     def email(self, obj):
         return obj.customer.email
