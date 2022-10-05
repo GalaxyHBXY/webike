@@ -55,11 +55,16 @@
                         <button class="btn btn-outline-dark js-btn-plus" type="button">&plus;</button>
                     </div>
                 </div>
-                {% if is_bike and product.is_rent %}
-                    <button class="btn btn-info mt-2" id="checkout-button">Book Now</button>
+                {% if  user.user_type == "Customer" %}
+                    {% if is_bike and product.is_rent %}
+                        <button class="btn btn-info mt-2" id="checkout-button">Book Now</button>
+                    {% else %}
+                        <button class="btn btn-info mt-2" id="checkout-button">Buy Now</button>
+                    {% endif %}
                 {% else %}
-                    <button class="btn btn-info mt-2" id="checkout-button">Buy Now</button>
+                    <button type="button" class="btn btn-primary" disabled>You are a merchant</button>
                 {% endif %}
+
             </div>
         </div>
         <!-- modal that displays the zoomed image -->

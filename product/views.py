@@ -88,6 +88,7 @@ def success(request):
 def detail(request, id):
     product = None
     is_bike = False
+    user = request.user
     try:
         product = Bike.objects.get(id=id)
         is_bike = True
@@ -96,7 +97,8 @@ def detail(request, id):
 
     context = {'product': product,
                'is_bike': is_bike,
-               'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY
+               'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,
+               'user': user
                }
 
     return render(request, template_name="product/product_detail.html", context=context)
