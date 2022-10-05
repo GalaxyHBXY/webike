@@ -73,33 +73,62 @@ class PaymentFailedView(LoginRequiredMixin, TemplateView):
     template_name = "payments/payment_failed.html"
 
 def get_created_checkout_session(request,request_data,quantity,product,mode):
-    checkout_session = stripe.checkout.Session.create(
-        # Customer Email is optional,
-        # It is not safe to accept email directly from the client side
-        customer_email=request_data['email'],
-        payment_method_types=['card'],
-        line_items=[
-            {
-                'price_data': {
-                    'currency': 'aud',
-                    'product_data': {
-                        'name': product.product_name,
+    if(mode=="subscrption"):
+        checkout_session = stripe.checkout.Session.create(
+            # Customer Email is optional,
+            # It is not safe to accept email directly from the client side
+            customer_email=request_data['email'],
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'aud',
+                        'product_data': {
+                            'name': product.product_name,
+                        },
+                        "recurring": {"interval": "week"},
+                        'unit_amount': int(product.price * 100),
+
                     },
-                    "recurring": {"interval": "week"},
-                    'unit_amount': int(product.price * 100),
 
-                },
+                    'quantity': quantity,
+                }
+            ],
 
-                'quantity': quantity,
-            }
-        ],
+            mode=mode,
+            success_url=request.build_absolute_uri(
+                reverse('success')
+            ) + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=request.build_absolute_uri(reverse('failed')),
+        )
+    else:
+        checkout_session = stripe.checkout.Session.create(
+            # Customer Email is optional,
+            # It is not safe to accept email directly from the client side
+            customer_email=request_data['email'],
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'aud',
+                        'product_data': {
+                            'name': product.product_name,
+                        },
+                        'unit_amount': int(product.price * 100),
 
-        mode=mode,
-        success_url=request.build_absolute_uri(
-            reverse('success')
-        ) + "?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url=request.build_absolute_uri(reverse('failed')),
-    )
+                    },
+
+                    'quantity': quantity,
+                }
+            ],
+
+            mode=mode,
+            success_url=request.build_absolute_uri(
+                reverse('success')
+            ) + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=request.build_absolute_uri(reverse('failed')),
+        )
+
     return checkout_session
 
 def cancel_subscription(request,id):
