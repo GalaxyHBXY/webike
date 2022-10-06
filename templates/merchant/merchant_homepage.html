@@ -165,12 +165,13 @@
                         <div class="row text-center my-4 mx-0">
                             <h4 class="text-dark">Orders</h4>
                         </div>
-                        <div style="max-width: 800px;">
+                        {% for order in orders %}
+                            <div style="max-width: 800px;">
                             <div class="card d-flex flex-wrap mb-3">
                                 <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
                                      style="background-color: #17a2b8;">
-                                    <p class="d-inline-block mb-0 font-italic">Oct 5, 2022, 5:44 a.m.</p>
-                                    <p class="d-inline-block ml-auto mb-0">Order ID: 12321312313123</p>
+                                    <p class="d-inline-block mb-0 font-italic">{{ order.created_on }}</p>
+                                    <p class="d-inline-block ml-auto mb-0">Order ID: {{ order.id }}</p>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table m-0">
@@ -191,16 +192,16 @@
                                                 <span class="icon-check text-success"></span>
                                             </td>
                                             <td>
-                                                <img src="https://cdn.shopify.com/s/files/1/0908/0796/products/MIDOPROBlack_600x.jpg?v=1635421845"
+                                                <img src="{{ order.product.image.url }}"
                                                      class="mr-3 product_img"
                                                      alt="product_image"
                                                      width="160"
                                                      height="90"
                                                      style="object-fit: cover; aspect-ratio: 16/9;">
                                             </td>
-                                            <td>A product name</td>
-                                            <td>80</td>
-                                            <td>x5</td>
+                                            <td>{{ order.product.product_name }}</td>
+                                            <td>{{ order.product.price }}</td>
+                                            <td>x{{ order.quantity }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -221,6 +222,9 @@
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
+
+
                     </div>
                 </div>
                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
