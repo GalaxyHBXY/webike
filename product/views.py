@@ -97,7 +97,7 @@ def detail(request, id):
     try:
         product = Bike.objects.get(id=id)
         is_bike = True
-    except:
+    except ObjectDoesNotExist:
         product = Product.objects.get(id=id)
 
     # Add view count

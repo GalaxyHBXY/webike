@@ -26,14 +26,14 @@ def create_checkout_session(request, id):
     # 有被篡改
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    checkout_session=None
+    checkout_session = None
 
     if int(product.stock) < int(quantity) or quantity == 0:
-        return fail("Insufficient product stock")
-    if len(Bike.objects.filter(pk=id))!=0 and Bike.objects.get(pk=id).is_rent:
-        checkout_session = get_created_checkout_session(request,request_data,quantity,product,mode="subscription")
+        return fail(request, "Insufficient product stock")
+    if product.is_rent:
+        checkout_session = get_created_checkout_session(request, request_data, quantity, product, mode="subscription")
     else:
-        checkout_session = get_created_checkout_session(request,request_data,quantity,product,mode="payment")
+        checkout_session = get_created_checkout_session(request, request_data, quantity, product, mode="payment")
 
     order = OrderDetail()
     order.customer = request.user
@@ -43,7 +43,6 @@ def create_checkout_session(request, id):
     # print(checkout_session.id)
     # order.mode = mode.upper()
     order.save()
-
 
     return JsonResponse({'sessionId': checkout_session.id})
 
@@ -61,7 +60,7 @@ class PaymentSuccessView(LoginRequiredMixin, TemplateView):
 
         order = get_object_or_404(OrderDetail, session_id=session.stripe_id)
 
-        order.product.stock=order.product.stock-order.quantity
+        order.product.stock = order.product.stock - order.quantity
         order.has_paid = True
         order.product.save()
         order.save()
@@ -72,8 +71,9 @@ class PaymentSuccessView(LoginRequiredMixin, TemplateView):
 class PaymentFailedView(LoginRequiredMixin, TemplateView):
     template_name = "payments/payment_failed.html"
 
-def get_created_checkout_session(request,request_data,quantity,product,mode):
-    if(mode=="subscription"):
+
+def get_created_checkout_session(request, request_data, quantity, product, mode):
+    if (mode == "subscription"):
         checkout_session = stripe.checkout.Session.create(
             # Customer Email is optional,
             # It is not safe to accept email directly from the client side
@@ -131,9 +131,10 @@ def get_created_checkout_session(request,request_data,quantity,product,mode):
 
     return checkout_session
 
-def cancel_subscription(request,id):
+
+def cancel_subscription(request, id):
     order = OrderDetail.objects.filter(pk=id)
-    if(len(order)!=1):
+    if (len(order) != 1):
         return fail("subscription does not exist")
 
     order = order[0]
@@ -141,5 +142,4 @@ def cancel_subscription(request,id):
     subscription_id = stripe.checkout.Session.retrieve(order.session_id)["subscription"]
     stripe.Subscription.delete(subscription_id)
 
-    return render(request,template_name="payments/order_cancel_success.html")
-
+    return render(request, template_name="payments/order_cancel_success.html")

@@ -53,11 +53,13 @@ class Address(models.Model):
 class Product(models.Model):
     product_name = models.CharField(max_length=255, null=False, blank=False)
     price = models.FloatField(default=0, validators=[MinValueValidator(0)])
+    stock = models.IntegerField(default=1, validators=[MinValueValidator(0)])
     merchant = models.ForeignKey(Merchant, on_delete=models.DO_NOTHING, null=False, blank=False)
     description = models.CharField(max_length=255, null=False, blank=False)
-    address = models.OneToOneField(Address, on_delete=models.CASCADE)
+    is_rent = models.BooleanField(default=False, verbose_name="This product is for rent")
     image = models.ImageField(null=False, blank=False, upload_to='media/product_pics', verbose_name='product_image',
                               validators=[validators.file_size_limit])
+    address = models.OneToOneField(Address, on_delete=models.CASCADE)
 
     class Status(models.TextChoices):
         AVAILABLE = ('AVAILABLE', 'AVAILABLE')
@@ -65,7 +67,6 @@ class Product(models.Model):
 
     status = models.CharField(max_length=11, choices=Status.choices, default=Status.AVAILABLE, null=False,
                               blank=False, verbose_name="status")
-    stock = models.IntegerField(default=1, validators=[MinValueValidator(0)])
 
     view_count = models.BigIntegerField(default = 0,
                                         blank=False,
@@ -110,5 +111,3 @@ class Bike(Product):
                                   verbose_name="Weight")
     bike_longDescription = models.CharField(max_length=200,  null=False, blank=False,
                                   verbose_name="LongDescription")
-
-    is_rent = models.BooleanField(default=False, verbose_name="This product is for rent")

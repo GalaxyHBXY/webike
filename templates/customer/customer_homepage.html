@@ -34,11 +34,11 @@
                                         Email: {{ user.email }}
                                     </strong>
                                 </p>
-{#                                <p class="mb-0">#}
-{#                                    <a href="/user/profile">#}
-{#                                        <button class="btn btn-info">Information Settings</button>#}
-{#                                    </a>#}
-{#                                </p>#}
+                                {#                                <p class="mb-0">#}
+                                {#                                    <a href="/user/profile">#}
+                                {#                                        <button class="btn btn-info">Information Settings</button>#}
+                                {#                                    </a>#}
+                                {#                                </p>#}
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,8 @@
                         {% if not orders %}
                             <div class="d-flex justify-content-center">
                                 <div class="alert alert-secondary w-100 text-md-center text-start" role="alert">
-                                    <p class="m-0">You order history is empty.<br><a href="../product/search?keyword=">Start Shopping Today!!!</a></p>
+                                    <p class="m-0">You order history is empty.<br><a href="../product/search?keyword=">Start
+                                        Shopping Today!!!</a></p>
                                 </div>
                             </div>
                         {% endif %}
@@ -91,8 +92,8 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="text-right p-3">
-                                        <button class="btn btn-outline-secondary mr-3"
+                                    <div class="text-md-right mt-2 px-2">
+                                        <button class="btn btn-outline-secondary mr-3 my-2"
                                                 data-toggle="modal"
                                                 data-target="#exampleModal"
                                                 data-merchant-name={{ order.product.merchant.merchant_name }}
@@ -101,25 +102,25 @@
                                             Merchant
                                         </button>
                                         {#                                        <a href="{% url "product_detail" order.product.id %}">#}
-                                        <button class="btn btn-outline-primary mr-3"
+                                        <button class="btn btn-outline-primary mr-3 my-2"
                                                 data-toggle="modal"
                                                 data-target="#exampleModal2"
                                                 data-order-id={{ order.id }}
                                                         data-product-name={{ order.product.product_name }}
                                                 data-quantity={{ order.quantity }}
-{#                                                        data-session-id={{ order.session_id }}#}
-                                                data-has-paid={{ order.has_paid }}
+                                                        {#                                                        data-session-id={{ order.session_id }}#}
+                                                        data-has-paid={{ order.has_paid }}
                                                 data-created-on={{ order.created_on }}
                                                         data-updated-on={{ order.updated_on }}
-                                                data-notes={{ order.notes }}
-                                        >
+                                                data-notes={{ order.notes }}>
                                             Order Details
                                         </button>
                                         {#                                        </a>#}
                                         {% if order.product.is_rent %}
-                                        <button class="btn btn-outline-secondary mr-3" href="{% url 'cancel_subscription' order.id %}">
-                                            Cancel Subscribe
-                                        </button>
+                                            <button class="btn btn-outline-danger mr-3 my-2"
+                                                    href="{% url 'cancel_subscription' order.id %}">
+                                                Cancel Subscription
+                                            </button>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -169,10 +170,10 @@
                                         <h6>Quantity:</h6>
                                         <a id="modal-quantity"></a>
                                     </div>
-{#                                    <div class="form-group">#}
-{#                                        <h6>Session id:</h6>#}
-{#                                        <a id="modal-session-id"></a>#}
-{#                                    </div>#}
+                                    {#                                    <div class="form-group">#}
+                                    {#                                        <h6>Session id:</h6>#}
+                                    {#                                        <a id="modal-session-id"></a>#}
+                                    {#                                    </div>#}
                                     <div class="form-group">
                                         <h6>Has Paid:</h6>
                                         <a id="modal-has-paid"></a>
