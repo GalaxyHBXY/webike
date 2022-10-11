@@ -49,6 +49,13 @@
                         <div class="row text-center my-4 mx-0">
                             <h4 class="text-dark">Order History</h4>
                         </div>
+                       {% if not orders %}
+                            <div class="d-flex justify-content-center">
+                                <div class="alert alert-secondary w-100 text-md-center text-start" role="alert">
+                                    <p class="m-0">You order history is empty.</p>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div style="max-width: 800px;">
                             {% for order in orders %}
                                 <div class="card d-flex flex-wrap mb-3">

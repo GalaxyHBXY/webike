@@ -165,6 +165,15 @@
                         <div class="row text-center my-4 mx-0">
                             <h4 class="text-dark">Orders</h4>
                         </div>
+
+                        {% if not orders %}
+                            <div class="d-flex justify-content-center">
+                                <div class="alert alert-secondary w-100 text-md-center text-start" role="alert">
+                                    <p class="m-0">You do not have any customer orders.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+
                         {% for order in orders %}
                             <div style="max-width: 800px;">
                             <div class="card d-flex flex-wrap mb-3">
