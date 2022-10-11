@@ -67,6 +67,11 @@ class Product(models.Model):
                               blank=False, verbose_name="status")
     stock = models.IntegerField(default=1, validators=[MinValueValidator(0)])
 
+    view_count = models.BigIntegerField(default = 0,
+                                        blank=False,
+                                        null=False,
+                                        verbose_name="view count")
+
     def __str__(self):
         return self.product_name
 

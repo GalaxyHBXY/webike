@@ -95,6 +95,10 @@ def detail(request, id):
     except:
         product = Product.objects.get(id=id)
 
+    #Add view count
+    product.view_count+=1
+    product.save()
+
     context = {'product': product,
                'is_bike': is_bike,
                'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,

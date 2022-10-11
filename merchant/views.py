@@ -22,7 +22,6 @@ def home(request):
     for each in OrderDetail.objects.all():
         if each.product.merchant_id==merchant.pk:
             orders.append(each)
-    # context={"order":orders}
     context['orders'] = orders
     return render(request, template_name="merchant/merchant_homepage.html", context=context)
 

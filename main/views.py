@@ -6,12 +6,13 @@ from product.models import Product
 # Create your views here.
 def index(request):
     return render(request, template_name="main/index.html",
-                  context={'hide_hr': True, 'products': Product.objects.order_by("-id")})
+                  context={'hide_hr': True, 'products': Product.objects.order_by("-view_count")[:6]})
+
+
 
 
 def webikers(request):
-    return render(request, template_name="main/webikers.html"
-                  )
+    return render(request, template_name="main/webikers.html")
 
 
 def wesellers(request):
