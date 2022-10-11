@@ -99,7 +99,7 @@
                 <div class="col-12 col-sm-6 col-xl-4 p-1">
                     <div class="card" style="max-width: 400px;">
                         <a href="{% url 'product_detail' each.id %}">
-                            <img src="{{ each.image.url }}" class="card-img-top" alt="product image">
+                            <img src="{{ each.image.url }}" class="card-img-top img-fluid overlay_img" alt="product image" style="object-fit: cover; aspect-ratio: 16/9">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title text-dark mb-0">

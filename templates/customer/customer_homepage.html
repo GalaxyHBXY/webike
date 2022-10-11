@@ -49,7 +49,7 @@
                         <div class="row text-center my-4 mx-0">
                             <h4 class="text-dark">Order History</h4>
                         </div>
-                       {% if not orders %}
+                        {% if not orders %}
                             <div class="d-flex justify-content-center">
                                 <div class="alert alert-secondary w-100 text-md-center text-start" role="alert">
                                     <p class="m-0">You order history is empty.</p>
@@ -100,11 +100,22 @@
                                                 data-merchant-email={{ order.product.merchant.user.email }}>Contact
                                             Merchant
                                         </button>
-                                        <a href="{% url "product_detail" order.product.id %}">
-                                            <button class="btn btn-outline-info">
-                                                View Details
-                                            </button>
-                                        </a>
+                                        {#                                        <a href="{% url "product_detail" order.product.id %}">#}
+                                        <button class="btn btn-outline-primary mr-3"
+                                                data-toggle="modal"
+                                                data-target="#exampleModal2"
+                                                data-order-id={{ order.id }}
+                                                        data-product-name={{ order.product.product_name }}
+                                                data-quantity={{ order.quantity }}
+{#                                                        data-session-id={{ order.session_id }}#}
+                                                data-has-paid={{ order.has_paid }}
+                                                data-created-on={{ order.created_on }}
+                                                        data-updated-on={{ order.updated_on }}
+                                                data-notes={{ order.notes }}
+                                        >
+                                            Order Details
+                                        </button>
+                                        {#                                        </a>#}
                                     </div>
                                 </div>
                             {% endfor %}
@@ -136,6 +147,51 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Order</h5>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <h6>Product name:</h6>
+                                        <a id="modal-product"></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Quantity:</h6>
+                                        <a id="modal-quantity"></a>
+                                    </div>
+{#                                    <div class="form-group">#}
+{#                                        <h6>Session id:</h6>#}
+{#                                        <a id="modal-session-id"></a>#}
+{#                                    </div>#}
+                                    <div class="form-group">
+                                        <h6>Has Paid:</h6>
+                                        <a id="modal-has-paid"></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Created on:</h6>
+                                        <a id="modal-created-on"></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Updated on:</h6>
+                                        <a id="modal-updated-on"></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <h6>Notes:</h6>
+                                        <a id="modal-notes"></a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -154,6 +210,28 @@
             modal.find('#modal-email').text(email)
             modal.find('#modal-phone').attr("href", 'tel:' + phone)
             modal.find('#modal-email').attr("href", 'mailto:' + email)
+        })
+
+        $('#exampleModal2').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); // Button that triggered the modal
+            const order_id = button.data('order-id'); // Extract info from data-* attributes
+            const product = button.data('product-name'); // Extract info from data-* attributes
+            const quantity = button.data('quantity'); // Extract info from data-* attributes
+            {#const session_id = button.data('session-id'); // Extract info from data-* attributes#}
+            const has_paid = button.data('has-paid'); // Extract info from data-* attributes
+            const created_on = button.data('created-on'); // Extract info from data-* attributes
+            const updated_on = button.data('updated-on'); // Extract info from data-* attributes
+            const notes = button.data('notes'); // Extract info from data-* attributes
+            const modal = $(this);
+            modal.find('.modal-title').text('Order ' + order_id)
+            modal.find('#modal-product').text(product)
+            modal.find('#modal-quantity').text(quantity)
+            {#modal.find('#modal-session-id').text(session_id)#}
+            modal.find('#modal-has-paid').text(has_paid)
+            modal.find('#modal-created-on').text(created_on)
+            modal.find('#modal-updated-on').text(updated_on)
+            modal.find('#modal-has-paid').text(has_paid)
+            modal.find('#modal-notes').text(notes)
         })
     </script>
 {% endblock javascript %}

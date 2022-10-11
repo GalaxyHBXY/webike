@@ -10,11 +10,12 @@
 #
 # print(a)
 
+from django.utils import timezone
 def main():
-  a = {"a":1,"b":2}
-  a["c"]=3
-
-  print(a)
+    now = timezone.now()
+  # a = {"a":1,"b":2}
+  # a["c"]=3
+    print(now)
 
 if __name__ == '__main__':
     main()
