@@ -116,6 +116,11 @@
                                             Order Details
                                         </button>
                                         {#                                        </a>#}
+                                        {% if order.product.is_rent %}
+                                        <button class="btn btn-outline-secondary mr-3" href="{% url 'cancel_subscription' order.id %}">
+                                            Cancel Subscribe
+                                        </button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
