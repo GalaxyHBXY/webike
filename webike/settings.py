@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','localhost','47.74.89.94','www.usyd3888.work','usyd3888.work']
 
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 

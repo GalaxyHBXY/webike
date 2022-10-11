@@ -1,4 +1,8 @@
+import json
+
 import requests
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 from main.views import fail
@@ -6,6 +10,7 @@ from merchant.models import Merchant
 from product.forms import createProductForm, createAddressForm, createBikeForm
 from product.models import Product, Bike
 from django.conf import settings
+from payments.models import OrderDetail
 
 
 # Create your views here.
@@ -95,8 +100,8 @@ def detail(request, id):
     except:
         product = Product.objects.get(id=id)
 
-    #Add view count
-    product.view_count+=1
+    # Add view count
+    product.view_count += 1
     product.save()
 
     context = {'product': product,
@@ -219,3 +224,14 @@ def find_corresponding_product(bike, Products):
     for each in Products:
         if bike.product_name == each.product_name:
             return each
+
+
+def product_ship(request):
+    order_id = json.loads(request.body)['order_id']
+    try:
+        order = OrderDetail.objects.get(pk=int(order_id))
+        order.has_shipped = True
+        order.save()
+        return JsonResponse({"order_id": order_id, "status": "success"})
+    except ObjectDoesNotExist:
+        return JsonResponse({"order_id": order_id, "status": "failed"})

@@ -176,61 +176,68 @@
 
                         {% for order in orders %}
                             <div style="max-width: 800px;">
-                            <div class="card d-flex flex-wrap mb-3">
-                                <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
-                                     style="background-color: #17a2b8;">
-                                    <p class="d-inline-block mb-0 font-italic">{{ order.created_on }}</p>
-                                    <p class="d-inline-block ml-auto mb-0">Order ID: {{ order.id }}</p>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table m-0">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" style="width: 140px;">Status</th>
-                                            <th scope="col" style="width: 80px;">Product</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Quantity</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                Incomplete
-                                                <span class="icon-close text-danger"></span>
-                                                <span class="icon-check text-success"></span>
-                                            </td>
-                                            <td>
-                                                <img src="{{ order.product.image.url }}"
-                                                     class="mr-3 product_img"
-                                                     alt="product_image"
-                                                     width="160"
-                                                     height="90"
-                                                     style="object-fit: cover; aspect-ratio: 16/9;">
-                                            </td>
-                                            <td>{{ order.product.product_name }}</td>
-                                            <td>{{ order.product.price }}</td>
-                                            <td>x{{ order.quantity }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="text-right p-3">
-                                    <!-- show this if only order status is incomplete -->
-                                    <button class="btn btn-outline-danger mr-3"
-                                            data-toggle="modal"
-                                            data-target="#confirmModal"
-                                            data-order="1">
-                                        Shipping Confirmation
-                                    </button>
-                                    <a href="">
-                                        <button class="btn btn-outline-info">
-                                            View Details
-                                        </button>
-                                    </a>
+                                <div class="card d-flex flex-wrap mb-3">
+                                    <div class="card-header d-flex flex-wrap w-100 p-2 text-white font-weight-bold"
+                                         style="background-color: #17a2b8;">
+                                        <p class="d-inline-block mb-0 font-italic">{{ order.created_on }}</p>
+                                        <p class="d-inline-block ml-auto mb-0">Order ID: {{ order.id }}</p>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table m-0">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col" style="width: 140px;">Status</th>
+                                                <th scope="col" style="width: 80px;">Product</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Quantity</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td id="status-order-{{ order.id }}">
+                                                    {% if order.has_shipped %}
+                                                        Shipped
+                                                        <span class="icon-check text-success"></span>
+                                                    {% else %}
+                                                        Not shipped
+                                                        <span class="icon-close text-danger"></span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <img src="{{ order.product.image.url }}"
+                                                         class="mr-3 product_img"
+                                                         alt="product_image"
+                                                         width="160"
+                                                         height="90"
+                                                         style="object-fit: cover; aspect-ratio: 16/9;">
+                                                </td>
+                                                <td>{{ order.product.product_name }}</td>
+                                                <td>{{ order.product.price }}</td>
+                                                <td>x{{ order.quantity }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-right p-3">
+                                        <!-- show this if only order status is incomplete -->
+                                        {% if not order.has_shipped %}
+                                            <button class="btn btn-outline-danger mr-3"
+                                                    data-toggle="modal"
+                                                    data-target="#confirmModal"
+                                                    data-order="{{ order.id }}"
+                                                    id="confirm-button-order-{{ order.id }}">
+                                                Shipping Confirmation
+                                            </button>
+                                        {% endif %}
+                                        <a href="">
+                                            <button class="btn btn-outline-info">
+                                                View Details
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         {% endfor %}
 
 
@@ -238,6 +245,10 @@
                 </div>
                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form id="confirmForm">
+                        {% csrf_token %}
+                        <p id="modal-order-id" class="d-none"></p>
+                    </form>
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -251,7 +262,9 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Confirm</button>
+                                <button type="button" class="btn btn-danger shipping-confirm-button"
+                                        data-dismiss="modal">Confirm
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -262,7 +275,37 @@
 
 {% endblock content %}
 {% block javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        $('#confirmModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); // Button that triggered the modal
+            document.getElementById('modal-order-id').innerText = button.data('order');
+        })
+    </script>
+
+    <script>
+        $('.shipping-confirm-button').click(function () {
+            axios({
+                method: 'post',
+                url: '/product/ship',
+                data: {
+                    order_id: document.getElementById('modal-order-id').textContent
+                },
+                headers: {
+                    'X-CSRFToken': "{{csrf_token}}"
+                }
+            })
+                .then(function (response) {
+                    document.getElementById("status-order-" + response.data.order_id)
+                        .innerHTML = 'Shipped <span class="icon-check text-success"></span>'
+                    document.getElementById("confirm-button-order-" + response.data.order_id)
+                        .style.display = "none";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        });
+
         function selectCancelToggle() {
             const checkBoxes = document.getElementsByClassName('product-checkbox');
             const selectAllBtn = document.getElementById('select-all-btn');

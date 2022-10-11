@@ -40,6 +40,11 @@ class OrderDetail(models.Model):
         verbose_name='Payment Status'
     )
 
+    has_shipped = models.BooleanField(
+        default=False,
+        verbose_name="Shipping"
+    )
+
     created_on = models.DateTimeField(
         auto_now_add=True
     )
@@ -50,7 +55,9 @@ class OrderDetail(models.Model):
 
     notes = models.CharField(
         default="",
-        max_length=256
+        max_length=256,
+        null=True,
+        blank=True
     )
 
     class Mode(models.TextChoices):

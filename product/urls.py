@@ -1,6 +1,6 @@
 from django.urls import path
 
-from product.views import add_new_product, success, detail, product_search, product_filter
+from product.views import add_new_product, success, detail, product_search, product_filter, product_ship
 
 urlpatterns = [
     path('add_new_product', add_new_product, name='add_new_product'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:id>', detail, name='product_detail'),
     path('search', product_search, name='product_search'),
     path('filter', product_filter, name='product_filter'),
+    path('ship', product_ship, name="product_ship")
 ]
