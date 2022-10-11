@@ -137,9 +137,21 @@ def cancel_subscription(request, id):
     if (len(order) != 1):
         return fail("subscription does not exist")
 
+    stripe.api_key = settings.STRIPE_SECRET_KEY
     order = order[0]
+    print('')
+    print(order.session_id)
+    print(stripe.checkout.Session.retrieve(order.session_id))
+    print('')
 
-    subscription_id = stripe.checkout.Session.retrieve(order.session_id)["subscription"]
-    stripe.Subscription.delete(subscription_id)
+    try:
+        subscription_id = stripe.checkout.Session.retrieve(order.session_id)["subscription"]
+        stripe.Subscription.delete(subscription_id)
+    except:
+        return render(request, template_name="payments/order_cancel_failed.html")
+
+    order.product.is_rent = False
+    order.save()
+    print(order.product.is_rent)
 
     return render(request, template_name="payments/order_cancel_success.html")

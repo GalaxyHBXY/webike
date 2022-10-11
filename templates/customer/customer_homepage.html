@@ -117,10 +117,11 @@
                                         </button>
                                         {#                                        </a>#}
                                         {% if order.product.is_rent %}
-                                            <button class="btn btn-outline-danger mr-3 my-2"
-                                                    href="{% url 'cancel_subscription' order.id %}">
-                                                Cancel Subscription
-                                            </button>
+                                            <a href="{% url 'cancel_subscription' order.id %}">
+                                                <button class="btn btn-outline-danger mr-3 my-2">
+                                                    Cancel Subscription
+                                                </button>
+                                            </a>
                                         {% endif %}
                                     </div>
                                 </div>
