@@ -73,7 +73,7 @@ class PaymentFailedView(LoginRequiredMixin, TemplateView):
     template_name = "payments/payment_failed.html"
 
 def get_created_checkout_session(request,request_data,quantity,product,mode):
-    if(mode=="subscrption"):
+    if(mode=="subscription"):
         checkout_session = stripe.checkout.Session.create(
             # Customer Email is optional,
             # It is not safe to accept email directly from the client side
