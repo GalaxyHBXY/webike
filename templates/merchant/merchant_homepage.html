@@ -35,11 +35,11 @@
                                         Phone: {{ user.phone }}
                                     </strong>
                                 </p>
-{#                                <p class="mb-0">#}
-{#                                    <a href="/user/profile">#}
-{#                                        <button class="btn btn-info">Information Settings</button>#}
-{#                                    </a>#}
-{#                                </p>#}
+                                {#                                <p class="mb-0">#}
+                                {#                                    <a href="/user/profile">#}
+                                {#                                        <button class="btn btn-info">Information Settings</button>#}
+                                {#                                    </a>#}
+                                {#                                </p>#}
                             </div>
                         </div>
                     </div>
@@ -108,8 +108,10 @@
                                 </button>
                                 <button class="btn btn-light" id="select-btn" onclick="selectCancelToggle()">Select
                                 </button>
-                                <button class="btn btn-danger d-none" id="delete-btn">Delete</button>
-                                <button class="btn btn-secondary d-none" id="cancel-btn" onclick="toggleClose()">
+                                <button class="btn btn-danger d-none" id="delete-btn"
+                                        onclick="deleteProducts()">Delete
+                                </button>
+                                <button class="btn btn-secondary d-none" id="cancel-btn" onclick="selectCancelToggle()">
                                     Cancel
                                 </button>
                             </div>
@@ -124,40 +126,45 @@
                             </div>
                         {% endif %}
 
-                        <div class="row m-0 d-flex justify-content-xs-center justify-content-sm-start">
-                            {% for p in products %}
-                                <div class="col-12 col-sm-6 col-md-4 mt-3 p-0 align-items-stretch">
-                                    <label for="{{ p.id }}-checkbox"></label>
-                                    <input type="checkbox" id="{{ p.id }}-checkbox" class="product-checkbox d-none">
-                                    <div class="card">
-                                        <div style="position: relative;" class="overlay_container"
-                                             onclick="window.location.href='{% url 'product_detail' p.id %}'">
-                                            <img src="{{ p.image.url }}" class="card-img-top img-fluid overlay_img"
-                                                 alt="..." style="object-fit: cover; aspect-ratio: 16/9">
-                                            <p class="overlay_text text-light text-uppercase w-100"
-                                               style="position: absolute;
+                        <form action="{% url 'delete_product' %}" method="post" id="products-form">
+                            {% csrf_token %}
+                            <div class="row m-0 d-flex justify-content-xs-center justify-content-sm-start">
+                                {% for p in products %}
+                                    <div class="col-12 col-sm-6 col-md-4 mt-3 p-0 align-items-stretch">
+                                        <label for="{{ p.id }}-checkbox"></label>
+                                        <input type="checkbox" id="{{ p.id }}-checkbox" class="product-checkbox d-none"
+                                               name="products" value="{{ p.id }}">
+                                        <div class="card">
+                                            <div style="position: relative;" class="overlay_container"
+                                                 onclick="window.location.href='{% url 'product_detail' p.id %}'">
+                                                <img src="{{ p.image.url }}" class="card-img-top img-fluid overlay_img"
+                                                     alt="..." style="object-fit: cover; aspect-ratio: 16/9">
+                                                <p class="overlay_text text-light text-uppercase w-100"
+                                                   style="position: absolute;
                                                top: 50%;
                                                left: 50%;
                                                transform: translate(-50%,-50%);
                                                text-align: center">
-                                                Click to View Details
-                                            </p>
-                                        </div>
-                                        <div class="card-body p-2">
-                                            <h5 class="card-title m-0">
-                                                {{ p.product_name }}
-                                            </h5>
-                                            <p class=" card-text text-uppercase text-left m-0">
-                                                Price: ${{ p.price }}
-                                            </p>
-                                            <p class=" card-text text-uppercase text-left m-0">
-                                                Stock: {{ p.stock }}
-                                            </p>
+                                                    Click to View Details
+                                                </p>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <h5 class="card-title m-0">
+                                                    {{ p.product_name }}
+                                                </h5>
+                                                <p class=" card-text text-uppercase text-left m-0">
+                                                    Price: ${{ p.price }}
+                                                </p>
+                                                <p class=" card-text text-uppercase text-left m-0">
+                                                    Stock: {{ p.stock }}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                {% endfor %}
+
+                            </div>
+                        </form>
                     </div>
                     <br>
                     <!-- Orders -->
@@ -329,21 +336,15 @@
             }
         }
 
-        function toggleClose() {
-            const checkBoxes = document.getElementsByClassName('product-checkbox');
-            const selectAllBtn = document.getElementById('select-all-btn');
-            const cancelBtn = document.getElementById('cancel-btn');
-            const deleteBtn = document.getElementById('delete-btn');
-            const selectBtn = document.getElementById('select-btn');
-            let items = [selectAllBtn, cancelBtn, deleteBtn, selectBtn];
-            for (let c of checkBoxes) {
-                items.push(c);
-            }
-            for (let i of items) {
-                i.classList.toggle('d-none');
+        function deleteProducts() {
+            // check if at least one product needs to be deleted
+            for (let p of document.getElementsByName("products")) {
+                if (p.checked) {
+                    document.getElementById('products-form').submit()
+                    break;
+                }
             }
         }
-
     </script>
 {% endblock javascript %}
 

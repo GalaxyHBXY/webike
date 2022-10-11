@@ -11,6 +11,7 @@ from product.forms import createProductForm, createAddressForm, createBikeForm
 from product.models import Product, Bike
 from django.conf import settings
 from payments.models import OrderDetail
+from user.models import User
 
 
 # Create your views here.
@@ -22,7 +23,7 @@ def add_new_product(request):
         return redirect('index')
 
     if request.user.user_type != 'Merchant':
-        return fail(request, {"description": "Permission Declined!"})
+        return fail(request, "Permission Declined!")
 
     p_form = createProductForm()
     a_form = createAddressForm()
@@ -86,19 +87,39 @@ def add_new_product(request):
     return render(request, template_name="product/add_product.html", context=context)
 
 
+# This does not actually delete products from the database
+# Instead it hides information from the users
+# Reasons for this is that historical orders rely on product information
+def delete_product(request):
+    for p in Product.objects.filter(pk__in=request.POST.getlist("products")):
+        p.status = Product.Status.UNAVAILABLE
+        p.save()
+    return redirect("merchant_home")
+
+
 def success(request):
     return render(request, template_name="product/add_product_success.html")
 
 
 def detail(request, id):
     product = None
+    # checks if product exists and if yes checks if it is still available
+    try:
+        product = Product.objects.get(id=id)
+        if product.status == Product.Status.UNAVAILABLE:
+            raise ObjectDoesNotExist
+    except ObjectDoesNotExist:
+        return fail(request, "invalid request - product does not exist")
+
     is_bike = False
     user = request.user
+
     try:
-        product = Bike.objects.get(id=id)
+        bike = Bike.objects.get(id=id)
+        product = bike
         is_bike = True
     except ObjectDoesNotExist:
-        product = Product.objects.get(id=id)
+        pass
 
     # Add view count
     product.view_count += 1
@@ -117,7 +138,7 @@ def product_search(request):
     keyword = request.GET.get("keyword")
     result = []
 
-    for each in Product.objects.all():
+    for each in Product.objects.filter(status=Product.Status.AVAILABLE):
         if keyword.lower() in each.get_product_all().lower():
             result.append(each)
 
@@ -125,73 +146,10 @@ def product_search(request):
 
     return render(request, template_name="product/product_search_result.html", context=context)
 
-    # print(keyword)
-
-
-# def product_filter(request):
-#     low_price = request.GET.get("low_price")
-#     high_price = request.GET.get("high_price")
-#
-#     location = request.GET.get("location")
-#     bike_size = request.GET.get("bike_size")
-#     style = request.GET.get("style")
-#
-#     products = Product.objects.all()
-#
-#     if low_price is not None and high_price is not None:
-#         low_price = float(low_price)
-#         high_price = float(high_price)
-#         if high_price >= low_price >= 0:
-#             products = products.filter(price__range=(low_price, high_price))
-#         else:
-#             return fail(request, {"description": "Invalid price range"})
-#
-#     products = products.filter(address__formatted_address__icontains=location)
-#     #
-#     context = {"products": products}
-#
-#     size = request.POST.getlist("size")
-#     style = request.POST.getlist("style")
-#     brand = request.POST.getlist("brand")
-#
-#     products = Product.objects.all()
-#     bikes = Bike.objects.all()
-#     final_set = []
-#
-#     for each in bikes:
-#         if len(size) != 0 and len(style) != 0 and len(brand) != 0:
-#             if each.bike_size.lower() in size and each.bike_style.lower() in style and each.bike_brand.lower() in brand:
-#                 final_set.append(each)
-#         elif len(size) != 0 and len(style) != 0 and len(brand) == 0:
-#             if each.bike_size.lower() in size and each.bike_style.lower() in style:
-#                 final_set.append(each)
-#         elif len(size) != 0 and len(style) == 0 and len(brand) != 0:
-#             if each.bike_size.lower() in size and each.bike_brand.lower() in brand:
-#                 final_set.append(each)
-#         elif len(size) == 0 and len(style) != 0 and len(brand) != 0:
-#             if each.bike_style.lower() in style and each.bike_brand.lower() in brand:
-#                 final_set.append(each)
-#         elif len(size) == 0 and len(style) == 0 and len(brand) != 0:
-#             if each.bike_brand.lower() in brand:
-#                 final_set.append(each)
-#         elif len(size) != 0 and len(style) == 0 and len(brand) == 0:
-#             print(each.bike_size.lower(), size)
-#             if each.bike_size.lower() in size:
-#                 final_set.append(each)
-#         elif len(size) == 0 and len(style) != 0 and len(brand) == 0:
-#             if each.bike_style.lower() in style:
-#                 final_set.append(each)
-#         else:
-#             final_set.append(each)
-#
-#     context = {"products": final_set}
-#
-#     return render(request, template_name="product/product_search_result.html", context=context)
-
 
 def product_filter(request):
     context = {}
-    products = Bike.objects.all()
+    products = Bike.objects.filter(status=Product.Status.AVAILABLE)
 
     size = [s.upper() for s in request.POST.getlist("size")]
     style = [s.upper() for s in request.POST.getlist("style")]

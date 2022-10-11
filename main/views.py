@@ -21,5 +21,5 @@ def werenters(request):
     return render(request, template_name="main/werenters.html")
 
 
-def fail(request, context):
-    return render(request, "main/fail.html", context=context)
+def fail(request, description):
+    return render(request, "main/fail.html", context={"description": description})

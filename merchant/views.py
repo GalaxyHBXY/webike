@@ -16,11 +16,12 @@ from .models import Merchant
 @login_required
 def home(request):
     merchant = Merchant.objects.get(user=request.user)
-    add_product_url = reverse("add_new_product")
-    context = {'products': Product.objects.filter(merchant=merchant).order_by("-id"), 'merchant': merchant}
+    context = {
+        'products': Product.objects.filter(merchant=merchant).order_by("-id").filter(status=Product.Status.AVAILABLE),
+        'merchant': merchant}
     orders = []
     for each in OrderDetail.objects.all():
-        if each.product.merchant_id==merchant.pk:
+        if each.product.merchant_id == merchant.pk:
             orders.append(each)
     context['orders'] = orders
     return render(request, template_name="merchant/merchant_homepage.html", context=context)
