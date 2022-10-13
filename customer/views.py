@@ -11,7 +11,7 @@ from payments.models import OrderDetail
 
 @login_required
 def home(request):
-    context = {'orders': OrderDetail.objects.filter(customer=request.user)}
+    context = {'orders': OrderDetail.objects.filter(customer=request.user).filter(has_paid=True)}
     return render(request, template_name="customer/customer_homepage.html", context=context)
 
 

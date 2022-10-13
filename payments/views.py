@@ -139,10 +139,6 @@ def cancel_subscription(request, id):
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     order = order[0]
-    print('')
-    print(order.session_id)
-    print(stripe.checkout.Session.retrieve(order.session_id))
-    print('')
 
     try:
         subscription_id = stripe.checkout.Session.retrieve(order.session_id)["subscription"]
@@ -150,8 +146,7 @@ def cancel_subscription(request, id):
     except:
         return render(request, template_name="payments/order_cancel_failed.html")
 
-    order.product.is_rent = False
+    order.has_paid = False
     order.save()
-    print(order.product.is_rent)
 
     return render(request, template_name="payments/order_cancel_success.html")

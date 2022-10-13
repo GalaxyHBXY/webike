@@ -8,7 +8,7 @@ from product.models import Product, Address, Bike
 class createProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('merchant', 'address', 'status', 'view_count')
+        exclude = ('merchant', 'address', 'status', 'view_count', 'is_rent')
 
     def __init__(self, *args, **kwargs):
         super(createProductForm, self).__init__(*args, **kwargs)
