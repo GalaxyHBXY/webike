@@ -1,7 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from .models import Customer
 from user.models import User
+from django.urls import reverse
+from .views import home
+
 
 # Create your tests here.
 class CustomerTestCase(TestCase):
@@ -22,7 +25,18 @@ class CustomerTestCase(TestCase):
         # self.customer.save()
         self.customer = Customer(user=self.user, first_name="first_name", last_name="last_name")
 
+        self.client = Client()
+
     def test_customer_model(self):
         self.assertEqual(self.customer.first_name, "first_name")
 
-
+    def test_signup(self):
+        self.client.post('/customer/signup', {
+            'email': 'test1@email.com',
+            'password1': 'pavlodar',
+            'password2': 'pavlodar',
+            'phone': 'Mypassword777',
+            'first_name': 'first',
+            'last_name': 'last'
+        })
+        self.assertTrue(Customer.objects.filter(first_name='first').exists())
