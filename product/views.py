@@ -72,10 +72,10 @@ def add_new_product(request):
 
             product = p_form.save(commit=False)
 
-            if request.POST.get("trade_type") == "sell":
-                pass
-            else:
-                pass
+            # if request.POST.get("trade_type") == "sell":
+            #     pass
+            # else:
+            #     pass
 
             product.merchant = request.user.merchant
             product.address = address
