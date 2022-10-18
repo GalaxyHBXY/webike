@@ -2,14 +2,16 @@
 {% load static %}
 {% block content %}
     <div style="text-align: center">
-
         <div style="color: black">
-            <h1> You product has been posted successfully </h1>
+            <h3> You product has been added successfully </h3>
             <div class="text-center">
-                <img style="max-width: 25%; height: auto; " src="{% static 'img/successful.png' %}" >
+                <img style="width: 100px; height: 100px;" src="{% static 'img/successful.png' %}" alt="success img">
             </div>
-            <a href="{% url 'merchant_home' %}"><button type="button" class="btn btn-primary">Go back to homepage</button></a>
+            <br>
+            <a href="{% url 'merchant_home' %}">
+                <button type="button" class="btn btn-info">Go back to homepage</button>
+            </a>
         </div>
-    </div>>
+    </div>
 
 {% endblock content %}
