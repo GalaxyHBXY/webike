@@ -15,24 +15,33 @@
         <div class="row d-flex justify-content-between h-100 m-0 py-4 w-100 mx-auto" style="max-width: 1800px;">
             <div class="row m-0 mx-auto" style="padding: 0; margin:0; width: 100%; max-width: 1800px;">
                 <div class="col-lg-4 mx-auto" style="max-width: 400px;">
-                    <div class="py-3 text-center" style="background-color: white; border-radius: 10px;">
+                    <div class="py-3" style="background-color: white; border-radius: 10px;">
                         <div class="mt-3">
                             <div class="mx-auto mt-3 border rounded p-5" style="width: 90%;">
                                 <h5 class="text-secondary text-start mb-2 mt-0">Personal Information</h5>
-                                <p>
+                                <p class="mb-1">
                                     <strong>
-                                        First Name: {{ user.customer.first_name }} {{ user.customer.user_id }}
+                                        First Name:
                                     </strong>
                                 </p>
                                 <p>
+                                    {{ user.customer.first_name }}
+                                </p>
+                                <p class="mb-1">
                                     <strong>
-                                        Last Name: {{ user.customer.last_name }}
+                                        Last Name:
                                     </strong>
                                 </p>
                                 <p>
+                                    {{ user.customer.last_name }}
+                                </p>
+                                <p class="mb-1">
                                     <strong>
-                                        Email: {{ user.email }}
+                                        Email:
                                     </strong>
+                                </p>
+                                <p class="mb-1">
+                                    {{ user.email }}
                                 </p>
                                 {#                                <p class="mb-0">#}
                                 {#                                    <a href="/user/profile">#}

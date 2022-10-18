@@ -11,16 +11,13 @@
                     {% csrf_token %}
                     <div class="input-group mb-2 m-0">
                         <input type="search" class="form-control rounded"/>
-                        <button type="button" class="btn btn-outline-dark ml-1">
+                        <button type="submit" class="btn btn-outline-dark ml-1">
                             <i class="icon-search"></i>
                         </button>
                     </div>
                     <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#filter"
                             aria-expanded="false" aria-controls="collapseExample">
                         <span class="icon-filter"></span> Filter
-                    </button>
-                    <button class="btn btn-outline-info" type="submit" data-toggle="collapse">
-                        Submit
                     </button>
                     <div class="collapse py-2" id="filter">
                         <a class="mb-0 text-info" href="">Select All</a>

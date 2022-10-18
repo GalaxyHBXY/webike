@@ -149,33 +149,31 @@ def product_search(request):
 
 def product_filter(request):
     context = {}
-    products = Bike.objects.filter(status=Product.Status.AVAILABLE)
+    products = Bike.objects.filter(status=Bike.Status.AVAILABLE)
 
     size = [s.upper() for s in request.POST.getlist("size")]
     style = [s.upper() for s in request.POST.getlist("style")]
     brand = [s.upper() for s in request.POST.getlist("brand")]
 
-    if len(size) == 0:
-        size = ["SMALL", "MEDIUM", "LARGE"]
-    if len(style) == 0:
-        style = ["STYLEA", "STYLEB", "STYLEC"]
-    if len(brand) == 0:
-        brand = ["A", "B", "C"]
+    filters = [size, style, brand]
 
-    if len(size) == 0 and len(style) == 0 and len(brand) == 0:
-        context['products'] = products
-        return render(request, template_name="product/product_search_result.html", context=context)
+    # check if any of the filters is applied
+    non_empty_flag = False
+    for f in filters:
+        if len(f) > 0:
+            non_empty_flag = True
 
+    if non_empty_flag:
+        for f in filters:
+            # if the filter is applied
+            if f:
+                products = products.intersection(Bike.objects.filter(bike_size__in=f))
     else:
-        print(size, style, brand)
-        products = products.intersection(Bike.objects.filter(bike_size__in=size))
-        print(products)
-        products = products.intersection(Bike.objects.filter(bike_style__in=style))
-        print(products)
-        products = products.intersection(Bike.objects.filter(bike_brand__in=brand))
-        print(products)
-        context['products'] = products
-        return render(request, template_name="product/product_search_result.html", context=context)
+        return render(request, template_name="product/product_search_result.html",
+                      context={'products': Product.objects.filter(status=Product.Status.AVAILABLE)})
+
+    context['products'] = products
+    return render(request, template_name="product/product_search_result.html", context=context)
 
 
 def find_corresponding_product(bike, Products):
