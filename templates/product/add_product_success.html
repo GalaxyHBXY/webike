@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <div style="text-align: center">
+    <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
         <div style="color: black">
-            <h3> You product has been added successfully </h3>
+            <h3>You product has been added successfully.</h3>
             <div class="text-center">
                 <img style="width: 100px; height: 100px;" src="{% static 'img/successful.png' %}" alt="success img">
             </div>
             <br>
-            <a href="{% url 'merchant_home' %}">
-                <button type="button" class="btn btn-info">Go back to homepage</button>
-            </a>
+            <div class="text-center">
+                <a href="{% url 'merchant_home' %}">
+                    <button type="button" class="btn btn-info">Go back to homepage</button>
+                </a>
+            </div>
         </div>
     </div>
 

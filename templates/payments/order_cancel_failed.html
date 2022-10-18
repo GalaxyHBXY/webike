@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="text-center">
-        <h1>Your subscription cancelled Failed!</h1>
-        <h1>Maybe you have canceled before !</h1>
+
+    <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
+        <div style="color: black">
+            <div class="text-center">
+                <h3>Your subscription cancelled Failed.</h3>
+                <h5>Maybe you have canceled before.</h5>
+            </div>
+            <div class="text-center">
+                <img style="width: 100px; height: 100px;" src="{% static 'img/fail.png' %}" alt="success img">
+            </div>
+            <br>
+        </div>
     </div>
-
-
 {% endblock content %}

@@ -1,19 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
-        <div class="text-center">
-            <img style="max-width: 65%; height: auto; " src="{% static 'img/orders/thanks_order.png' %}" >
-        </div>
-
-    <h1>
-        {{ num }}
-    </h1>
-    <div style="text-align: center">
-
+    <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
         <div style="color: black">
-            <h2> Pay successfully </h2>
+            <h3>Thank you! Your payment has been successful.</h3>
+            <div class="text-center">
+                <img style="width: 100px; height: 100px;" src="{% static 'img/successful.png' %}" alt="success img">
+            </div>
+            <br>
         </div>
-    </div>>
-
+    </div>
 {% endblock content %}

@@ -94,31 +94,18 @@ def signup(request, user_type):
         return redirect('index')
     else:
         u_form = CreateUserForm()
-        m_form = CreateMerchantForm()
-        c_form = CreateCustomerForm()
-
-        context = {'u_form': u_form}
-
+        t_form = None
+        template_name = None
         if user_type == "Customer":
-            context['c_form'] = c_form
+            t_form = CreateCustomerForm()
+            template_name = "customer/customer_signup_page.html"
         else:
-            context['m_form'] = m_form
+            t_form = CreateMerchantForm()
+            template_name = "merchant/merchant_signup_page.html"
 
         if request.method == 'POST':
             u_form = CreateUserForm(request.POST)
-            c_form = None
-            m_form = None
-            if user_type == "Customer":
-                c_form = CreateCustomerForm(request.POST)
-            else:
-                m_form = CreateMerchantForm(request.POST)
-
-            t_form = c_form if user_type == "Customer" else m_form
-
-            print(u_form.is_valid())
-            print(t_form.is_valid())
-            print(u_form.errors)
-            print(t_form.errors)
+            t_form = CreateCustomerForm(request.POST) if user_type == "Customer" else CreateMerchantForm(request.POST)
 
             if u_form.is_valid() and t_form.is_valid():
                 user = u_form.save(commit=False)
@@ -126,28 +113,24 @@ def signup(request, user_type):
                 user.is_active = False
                 user.save()
                 if user_type == "Customer":
-                    customer = c_form.save(commit=False)
+                    customer = t_form.save(commit=False)
                     customer.user = user
                     customer.save()
                 else:
-                    merchant = m_form.save(commit=False)
+                    merchant = t_form.save(commit=False)
                     merchant.user = user
                     merchant.save()
 
-                # send_ver_email(user, request)
-                current_site = get_current_site(request)
-
+                # send verification email
                 message = render_to_string('utils/email/acc_active_email.html', {
                     'user': user,
-                    'domain': current_site.domain,
+                    'domain': get_current_site(request).domain,
                     'uid': urlsafe_base64_encode(force_bytes(user.email)),
                     'token': account_activation_token.make_token(user),
                 })
-
                 gmail_send_message(user.email, "【WeBike】Activate your account.", message)
+
                 return redirect('signup_successful')
 
-        return render(request, template_name="customer/customer_signup_page.html",
-                      context=context) if user_type == "Customer" else render(request,
-                                                                              template_name="merchant/merchant_signup_page.html",
-                                                                              context=context)
+        context = {'u_form': u_form, 't_form': t_form}
+        return render(request, template_name=template_name, context=context)

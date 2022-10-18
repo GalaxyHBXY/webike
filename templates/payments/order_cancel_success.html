@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1>Your subscription cancelled successfully!</h1>
+    <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
+        <div style="color: black">
+            <h3>Your subscription has been successfully cancelled!</h3>
+            <div class="text-center">
+                <img style="width: 100px; height: 100px;" src="{% static 'img/successful.png' %}" alt="success img">
+            </div>
+            <br>
+        </div>
+    </div>
 {% endblock content %}

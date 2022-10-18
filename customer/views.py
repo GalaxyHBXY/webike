@@ -19,4 +19,4 @@ def home(request):
 
 
 def customer_signup(request):
-    return signup(request,"Customer")
+    return signup(request, "Customer")

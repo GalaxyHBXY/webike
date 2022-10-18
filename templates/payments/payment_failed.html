@@ -1,20 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
-        <div class="text-center">
-            <img style="max-width: 65%; height: auto; " src="{% static 'img/orders/cat_order.png' %}" >
-        </div>
-
-
-    <div style="text-align: center">
-
+    <div class="container-fluid main-sec row mx-auto justify-content-center" style="max-width: 2000px;">
         <div style="color: black">
-            <h2> Pay fail </h2>
+            <h3>Something went wrong. Your payment has failed.</h3>
+            <div class="text-center">
+                <img style="width: 100px; height: 100px;" src="{% static 'img/fail.png' %}" alt="success img">
+            </div>
+            <br>
         </div>
-
-
-
-    </div>>
-
+    </div>
 {% endblock content %}

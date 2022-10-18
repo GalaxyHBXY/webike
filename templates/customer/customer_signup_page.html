@@ -52,39 +52,39 @@
 
                             <div class="form-outline mb-4">
                                 <label class="form-label font-weight-bold"
-                                       for="{{ c_form.first_name.id_for_label }}">{{ c_form.first_name.label }}</label>
-                                {% if c_form.first_name.field.required %}
+                                       for="{{ t_form.first_name.id_for_label }}">{{ t_form.first_name.label }}</label>
+                                {% if t_form.first_name.field.required %}
                                     <span class="text-danger">*</span>
                                 {% endif %}
                                 <h6 class="text-danger"
-                                    id="{{ c_form.first_name.id_for_label }}_error">
-                                    {% if c_form.first_name.errors %}
-                                        {{ c_form.first_name.errors.0 |escape }}
+                                    id="{{ t_form.first_name.id_for_label }}_error">
+                                    {% if t_form.first_name.errors %}
+                                        {{ t_form.first_name.errors.0 |escape }}
                                     {% endif %}
                                 </h6>
-                                {{ c_form.first_name }}
-                                {% if c_form.first_name.help_text %}
+                                {{ t_form.first_name }}
+                                {% if t_form.first_name.help_text %}
                                     <p class="text-muted mt-1"
-                                       style="font-size: 0.9rem">{{ c_form.first_name.help_text|safe }}</p>
+                                       style="font-size: 0.9rem">{{ t_form.first_name.help_text|safe }}</p>
                                 {% endif %}
                             </div>
 
                             <div class="form-outline mb-4">
                                 <label class="form-label font-weight-bold"
-                                       for="{{ c_form.last_name.id_for_label }}">{{ c_form.last_name.label }}</label>
-                                {% if c_form.last_name.field.required %}
+                                       for="{{ t_form.last_name.id_for_label }}">{{ t_form.last_name.label }}</label>
+                                {% if t_form.last_name.field.required %}
                                     <span class="text-danger">*</span>
                                 {% endif %}
                                 <h6 class="text-danger"
-                                    id="{{ c_form.last_name.id_for_label }}_error">
-                                    {% if c_form.last_name.errors %}
-                                        {{ c_form.last_name.errors.0 |escape }}
+                                    id="{{ t_form.last_name.id_for_label }}_error">
+                                    {% if t_form.last_name.errors %}
+                                        {{ t_form.last_name.errors.0 |escape }}
                                     {% endif %}
                                 </h6>
-                                {{ c_form.last_name }}
-                                {% if c_form.last_name.help_text %}
+                                {{ t_form.last_name }}
+                                {% if t_form.last_name.help_text %}
                                     <p class="text-muted mt-1"
-                                       style="font-size: 0.9rem">{{ c_form.last_name.help_text|safe }}</p>
+                                       style="font-size: 0.9rem">{{ t_form.last_name.help_text|safe }}</p>
                                 {% endif %}
                             </div>
 
