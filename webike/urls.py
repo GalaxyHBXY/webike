@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from main.views import index, wesellers, werenters, webikers
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from user.views import user_login, user_logout, user_signup, reset_password
+from user.views import user_login, user_logout, user_signup, reset_password, activate, signup_successful
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -37,6 +38,8 @@ urlpatterns = [
     path('webikers', webikers, name="webikers"),
     path('wesellers', wesellers, name="wesellers"),
     path('werenters', werenters, name="werenters"),
+    path('signup/successful', signup_successful, name='signup_successful'),
+    path('activate/<uidb64>/<token>', activate, name='activate')
 ]
 
 urlpatterns += staticfiles_urlpatterns()
