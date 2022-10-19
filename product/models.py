@@ -9,13 +9,13 @@ from product import validators
 
 class Address(models.Model):
     address_line_1 = models.CharField(max_length=255, default="", null=False, blank=False,
-                                      verbose_name="address_line_1", help_text="460 Jones St")
+                                      verbose_name="Address Line 1", help_text="e.g. 460 Jones St")
     suburb = models.CharField(max_length=20,
                               default="",
                               null=False,
                               blank=False,
                               verbose_name='Suburb',
-                              help_text='e.g. Chatswood')
+                              help_text='e.g. Hornsby')
     postcode = models.CharField(max_length=4,
                                 default="",
                                 null=False,

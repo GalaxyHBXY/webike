@@ -9,7 +9,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 # Create your views here.
 import user
 from customer.forms import CreateCustomerForm
+from main.views import fail
 from merchant.forms import CreateMerchantForm
+from product.forms import createAddressForm
+from product.views import get_formatted_address
 from utils.GmailAPI import gmail_send_message
 from user.forms import CreateUserForm
 
@@ -95,9 +98,12 @@ def signup(request, user_type):
     else:
         u_form = CreateUserForm()
         t_form = None
+        a_form = None
         template_name = None
+
         if user_type == "Customer":
             t_form = CreateCustomerForm()
+            a_form = createAddressForm()
             template_name = "customer/customer_signup_page.html"
         else:
             t_form = CreateMerchantForm()
@@ -105,16 +111,35 @@ def signup(request, user_type):
 
         if request.method == 'POST':
             u_form = CreateUserForm(request.POST)
-            t_form = CreateCustomerForm(request.POST) if user_type == "Customer" else CreateMerchantForm(request.POST)
 
-            if u_form.is_valid() and t_form.is_valid():
+            if user_type == "Customer":
+                t_form = CreateCustomerForm(request.POST)
+                a_form = createAddressForm(request.POST)
+            else:
+                t_form = CreateMerchantForm(request.POST)
+
+            if a_form and a_form.is_valid() and u_form.is_valid() and t_form.is_valid():
+                gmap_response = get_formatted_address(request.POST['address_line_1'],
+                                                      request.POST['suburb'],
+                                                      request.POST['state'])
+                if gmap_response:
+                    address = a_form.save(commit=False)
+                    address.lat = gmap_response[0]
+                    address.lng = gmap_response[1]
+                    address.formatted_address = gmap_response[2]
+                    address.save()
+                else:
+                    return fail(request, "Invalid network status")
+
                 user = u_form.save(commit=False)
                 user.user_type = user_type
                 user.is_active = False
                 user.save()
                 if user_type == "Customer":
+                    a_form.save()
                     customer = t_form.save(commit=False)
                     customer.user = user
+                    customer.address = a_form.save(commit=False)
                     customer.save()
                 else:
                     merchant = t_form.save(commit=False)
@@ -131,6 +156,9 @@ def signup(request, user_type):
                 gmail_send_message(user.email, "【WeBike】Activate your account.", message)
 
                 return redirect('signup_successful')
-
-        context = {'u_form': u_form, 't_form': t_form}
+        print(a_form.is_valid())
+        print(a_form.errors)
+        print(t_form.is_valid())
+        print(t_form.errors)
+        context = {'u_form': u_form, 't_form': t_form, 'a_form': a_form}
         return render(request, template_name=template_name, context=context)

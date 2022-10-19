@@ -15,6 +15,24 @@ from user.models import User
 
 
 # Create your views here.
+def get_formatted_address(address_line_1, suburb, state):
+    API_KEY = 'AIzaSyA951Jowb33YxNfEoWnupBwVu6DXCISg3s'
+
+    full_address = '{} {} {}'.format(address_line_1, suburb, state)
+    params = {
+        'key': API_KEY,
+        'address': full_address
+    }
+    base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+    response = requests.get(base_url, params=params).json()
+    if response['status'] == 'OK':
+        geometry = response['results'][0]['geometry']
+        lat = geometry['location']['lat']
+        lng = geometry['location']['lng']
+        formatted_address = response['results'][0]['formatted_address']
+        return [lat, lng, formatted_address]
+
+
 def add_new_product(request):
     context = {}
 
@@ -43,40 +61,19 @@ def add_new_product(request):
             p_form = createBikeForm(request.POST, request.FILES)
 
         if p_form.is_valid() and a_form.is_valid():
-            address_line1 = request.POST['address_line_1']
-            suburb = request.POST['suburb']
-            state = request.POST['state']
-
-            API_KEY = 'AIzaSyA951Jowb33YxNfEoWnupBwVu6DXCISg3s'
-
-            full_address = '{} {} {}'.format(address_line1, suburb, state)
-            params = {
-                'key': API_KEY,
-                'address': full_address
-            }
-            base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
-            response = requests.get(base_url, params=params).json()
-            if response['status'] == 'OK':
-                geometry = response['results'][0]['geometry']
-                lat = geometry['location']['lat']
-                lng = geometry['location']['lng']
-                formatted_address = response['results'][0]['formatted_address']
-
+            gmap_response = get_formatted_address(request.POST['address_line_1'],
+                                                  request.POST['suburb'],
+                                                  request.POST['state'])
+            if gmap_response:
                 address = a_form.save(commit=False)
-                address.lat = lat
-                address.lng = lng
-                address.formatted_address = formatted_address
+                address.lat = gmap_response[0]
+                address.lng = gmap_response[1]
+                address.formatted_address = gmap_response[2]
                 address.save()
             else:
                 return fail(request, "Invalid network status")
 
             product = p_form.save(commit=False)
-
-            # if request.POST.get("trade_type") == "sell":
-            #     pass
-            # else:
-            #     pass
-
             product.merchant = request.user.merchant
             product.address = address
             product.save()
@@ -148,6 +145,31 @@ def product_search(request):
 
 
 def product_filter(request):
+    # context = {}
+    # products = Product.objects.filter(status=Product.Status.AVAILABLE)
+    #
+    # size = [s.upper() for s in request.POST.getlist("size")]
+    # style = [s.upper() for s in request.POST.getlist("style")]
+    # brand = [s.upper() for s in request.POST.getlist("brand")]
+    #
+    # if len(size) == 0:
+    #     size = ["SMALL", "MEDIUM", "LARGE"]
+    # if len(style) == 0:
+    #     style = ["STYLEA", "STYLEB", "STYLEC"]
+    # if len(brand) == 0:
+    #     brand = ["A", "B", "C"]
+    #
+    # if len(size) == 0 and len(style) == 0 and len(brand) == 0:
+    #     context['products'] = products
+    #     return render(request, template_name="product/product_search_result.html", context=context)
+    #
+    # else:
+    #     products = products.intersection(Bike.objects.filter(bike_size__in=size))
+    #     products = products.intersection(Bike.objects.filter(bike_style__in=style))
+    #     products = products.intersection(Bike.objects.filter(bike_brand__in=brand))
+    #     context['products'] = products
+    #     return render(request, template_name="product/product_search_result.html", context=context)
+
     context = {}
     products = Bike.objects.filter(status=Bike.Status.AVAILABLE)
 
@@ -156,16 +178,14 @@ def product_filter(request):
     brand = [s.upper() for s in request.POST.getlist("brand")]
 
     filters = [size, style, brand]
-
-    # check if any of the filters is applied
     non_empty_flag = False
     for f in filters:
         if len(f) > 0:
             non_empty_flag = True
 
+    # check if any of the filters is applied
     if non_empty_flag:
         for f in filters:
-            # if the filter is applied
             if f:
                 products = products.intersection(Bike.objects.filter(bike_size__in=f))
     else:

@@ -19,30 +19,22 @@
                         <div class="mt-3">
                             <div class="mx-auto mt-3 border rounded p-5" style="width: 90%;">
                                 <h5 class="text-secondary text-start mb-2 mt-0">Personal Information</h5>
-                                <p class="mb-1">
-                                    <strong>
-                                        First Name:
-                                    </strong>
-                                </p>
-                                <p>
-                                    {{ user.customer.first_name }}
-                                </p>
-                                <p class="mb-1">
-                                    <strong>
-                                        Last Name:
-                                    </strong>
-                                </p>
-                                <p>
-                                    {{ user.customer.last_name }}
-                                </p>
-                                <p class="mb-1">
-                                    <strong>
-                                        Email:
-                                    </strong>
-                                </p>
-                                <p class="mb-1">
-                                    {{ user.email }}
-                                </p>
+                                {% for key, value in personal_info.items %}
+                                    <p class="mb-1">
+                                        <strong>
+                                            {{ key }}:
+                                        </strong>
+                                    </p>
+                                    {% if not forloop.last %}
+                                        <p>
+                                            {{ value }}
+                                        </p>
+                                    {% else %}
+                                        <p class="mb-0">
+                                            {{ value }}
+                                        </p>
+                                    {% endif %}
+                                {% endfor %}
                                 {#                                <p class="mb-0">#}
                                 {#                                    <a href="/user/profile">#}
                                 {#                                        <button class="btn btn-info">Information Settings</button>#}

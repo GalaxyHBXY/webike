@@ -26,16 +26,14 @@ class Merchant(models.Model):
                            verbose_name='ABN')
 
     merchant_name = models.CharField(max_length=50,
-                                    null=False,
-                                    blank=False,
-                                    verbose_name='Merchant Name')
+                                     null=False,
+                                     blank=False,
+                                     verbose_name='Merchant Name')
 
     merchant_intro = models.CharField(max_length=250,
-                                     null=True,
-                                     blank=True,
-                                     verbose_name='Merchant Introduction')
+                                      null=True,
+                                      blank=True,
+                                      verbose_name='Merchant Introduction')
 
     def __str__(self):
         return self.merchant_name
-
-

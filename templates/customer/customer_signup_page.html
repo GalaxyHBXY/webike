@@ -126,6 +126,66 @@
                                 {% endif %}
                             </div>
 
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
+                                       for="{{ t_form.emergency_contact.id_for_label }}">{{ t_form.emergency_contact.label }}</label>
+                                {% if t_form.emergency_contact.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger"
+                                    id="{{ t_form.emergency_contact.id_for_label }}_error">
+                                    {% if t_form.emergency_contact.errors %}
+                                        {{ t_form.emergency_contact.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ t_form.emergency_contact }}
+                                {% if t_form.emergency_contact.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ t_form.emergency_contact.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label font-weight-bold"
+                                       for="{{ t_form.emergency_contact_phone.id_for_label }}">{{ t_form.emergency_contact_phone.label }}</label>
+                                {% if t_form.emergency_contact_phone.field.required %}
+                                    <span class="text-danger">*</span>
+                                {% endif %}
+                                <h6 class="text-danger"
+                                    id="{{ t_form.emergency_contact_phone.id_for_label }}_error">
+                                    {% if t_form.emergency_contact_phone.errors %}
+                                        {{ t_form.emergency_contact_phone.errors.0 |escape }}
+                                    {% endif %}
+                                </h6>
+                                {{ t_form.emergency_contact_phone }}
+                                {% if t_form.emergency_contact_phone.help_text %}
+                                    <p class="text-muted mt-1"
+                                       style="font-size: 0.9rem">{{ t_form.emergency_contact_phone.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+
+                            {% for field in a_form %}
+                                <div class="form-outline mb-4">
+                                    <label class="form-label font-weight-bold"
+                                           for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {% if field.field.required %}
+                                        <span class="text-danger">*</span>
+                                    {% endif %}
+                                    <h6 class="text-danger"
+                                        id="{{ field.id_for_label }}_error">
+                                        {% if field.errors %}
+                                            {{ field.errors.0 |escape }}
+                                        {% endif %}
+                                    </h6>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <p class="text-muted mt-1"
+                                           style="font-size: 0.9rem">{{ field.help_text|safe }}</p>
+                                    {% endif %}
+                                </div>
+
+                            {% endfor %}
+
                             <div class="text-center text-lg-start mt-4 pt-2">
                                 <button type="submit" class="btn btn-info btn-lg"
                                         style="padding-left: 2.5rem; padding-right: 2.5rem;">Sign Up

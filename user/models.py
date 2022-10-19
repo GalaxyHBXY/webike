@@ -45,10 +45,10 @@ class User(AbstractUser):
                               null=False,
                               unique=True)
     phone = models.CharField(max_length=15,
-                             null=True,
-                             blank=True,
-                             default=None)
-    balance = models.FloatField(default=0,null=False,blank=False,validators=[MinValueValidator(0)])
+                             blank=False,
+                             null=False,
+                             default="")
+    balance = models.FloatField(default=0, null=False, blank=False, validators=[MinValueValidator(0)])
 
     class UserChoice(models.TextChoices):
         customer = 'Customer', _('Customer')
