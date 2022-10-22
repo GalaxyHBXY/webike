@@ -177,17 +177,17 @@ def product_filter(request):
     style = [s.upper() for s in request.POST.getlist("style")]
     brand = [s.upper() for s in request.POST.getlist("brand")]
 
-    filters = [size, style, brand]
+    filters = {'bike_size__in': size, 'bike_style__in': style, 'bike_brand__in': brand}
     non_empty_flag = False
-    for f in filters:
+    for key, f in filters.items():
         if len(f) > 0:
             non_empty_flag = True
 
     # check if any of the filters is applied
     if non_empty_flag:
-        for f in filters:
-            if f:
-                products = products.intersection(Bike.objects.filter(bike_size__in=f))
+        for key, f in filters.items():
+            if len(f) > 0:
+                products = products.intersection(Bike.objects.filter(**{key: f}))
     else:
         return render(request, template_name="product/product_search_result.html",
                       context={'products': Product.objects.filter(status=Product.Status.AVAILABLE)})
