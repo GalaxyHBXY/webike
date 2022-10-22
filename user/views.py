@@ -111,41 +111,49 @@ def signup(request, user_type):
 
         if request.method == 'POST':
             u_form = CreateUserForm(request.POST)
-
+            user = None
+            valid_flag = False
             if user_type == "Customer":
                 t_form = CreateCustomerForm(request.POST)
                 a_form = createAddressForm(request.POST)
-            else:
-                t_form = CreateMerchantForm(request.POST)
+                if u_form.is_valid() and t_form.is_valid() and a_form.is_valid():
+                    valid_flag = True
+                    gmap_response = get_formatted_address(request.POST['address_line_1'],
+                                                          request.POST['suburb'],
+                                                          request.POST['state'])
+                    if gmap_response:
+                        address = a_form.save(commit=False)
+                        address.lat = gmap_response[0]
+                        address.lng = gmap_response[1]
+                        address.formatted_address = gmap_response[2]
+                        address.save()
+                    else:
+                        return fail(request, "Invalid network status")
 
-            if a_form and a_form.is_valid() and u_form.is_valid() and t_form.is_valid():
-                gmap_response = get_formatted_address(request.POST['address_line_1'],
-                                                      request.POST['suburb'],
-                                                      request.POST['state'])
-                if gmap_response:
-                    address = a_form.save(commit=False)
-                    address.lat = gmap_response[0]
-                    address.lng = gmap_response[1]
-                    address.formatted_address = gmap_response[2]
-                    address.save()
-                else:
-                    return fail(request, "Invalid network status")
+                    user = u_form.save(commit=False)
+                    user.user_type = user_type
+                    user.is_active = False
+                    user.save()
 
-                user = u_form.save(commit=False)
-                user.user_type = user_type
-                user.is_active = False
-                user.save()
-                if user_type == "Customer":
-                    a_form.save()
                     customer = t_form.save(commit=False)
                     customer.user = user
                     customer.address = a_form.save(commit=False)
                     customer.save()
-                else:
+            else:
+                t_form = CreateMerchantForm(request.POST)
+                if u_form.is_valid() and t_form.is_valid():
+                    valid_flag = True
+                    user = u_form.save(commit=False)
+                    user.user_type = user_type
+                    user.is_active = False
+                    user.save()
+
+                    t_form = CreateMerchantForm(request.POST)
                     merchant = t_form.save(commit=False)
                     merchant.user = user
                     merchant.save()
 
+            if valid_flag:
                 # send verification email
                 message = render_to_string('utils/email/acc_active_email.html', {
                     'user': user,
@@ -156,9 +164,6 @@ def signup(request, user_type):
                 gmail_send_message(user.email, "【WeBike】Activate your account.", message)
 
                 return redirect('signup_successful')
-        print(a_form.is_valid())
-        print(a_form.errors)
-        print(t_form.is_valid())
-        print(t_form.errors)
-        context = {'u_form': u_form, 't_form': t_form, 'a_form': a_form}
-        return render(request, template_name=template_name, context=context)
+
+    context = {'u_form': u_form, 't_form': t_form, 'a_form': a_form}
+    return render(request, template_name=template_name, context=context)
