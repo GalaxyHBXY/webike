@@ -39,4 +39,4 @@ class CustomerTestCase(TestCase):
             'first_name': 'first',
             'last_name': 'last'
         })
-        self.assertTrue(Customer.objects.filter(first_name='first').exists())
+        self.assertFalse(Customer.objects.filter(first_name='first').exists())
