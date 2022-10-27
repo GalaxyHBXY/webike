@@ -21,6 +21,7 @@ class MerchantTestCase(TestCase):
                                  merchant_intro='info')
         self.client = Client()
 
+
     def test_merhchant_model(self):
         self.assertEqual(self.merchant.abn, "123")
 
