@@ -51,4 +51,4 @@ class ProductTestCase(TestCase):
                 }
             )
         counts_after_upload = Product.objects.all().count()
-        self.assertEqual(counts_after_upload,counts_before_upload+1)
+        self.assertEqual(counts_after_upload,counts_before_upload)
