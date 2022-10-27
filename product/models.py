@@ -68,7 +68,7 @@ class Product(models.Model):
     status = models.CharField(max_length=11, choices=Status.choices, default=Status.AVAILABLE, null=False,
                               blank=False, verbose_name="status")
 
-    view_count = models.BigIntegerField(default = 0,
+    view_count = models.BigIntegerField(default=0,
                                         blank=False,
                                         null=False,
                                         verbose_name="view count")
@@ -104,10 +104,17 @@ class Bike(Product):
 
     bike_brand = models.CharField(max_length=200, choices=Brand.choices, default=Brand.A, null=False, blank=False,
                                   verbose_name="Brand")
-    # maybe need more choices for power/weight
-    bike_power = models.CharField(max_length=200,  default=None, null=False, blank=False,
-                                  verbose_name="Power")
-    bike_weight = models.CharField(max_length=200,  default=None, null=False, blank=False,
-                                  verbose_name="Weight")
-    bike_longDescription = models.CharField(max_length=200,  null=False, blank=False,
-                                  verbose_name="LongDescription")
+
+    bike_tires = models.CharField(max_length=20,
+                             default="",
+                             null=False,
+                             blank=False,
+                             verbose_name='Tires',
+                             help_text='e.g. Kenda 24 x 24')
+
+    bike_throttle = models.CharField(max_length=20,
+                                default="",
+                                null=False,
+                                blank=False,
+                                verbose_name='Throttle',
+                                help_text='e.g. Half Twist Throttle')
