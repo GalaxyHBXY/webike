@@ -1,3 +1,4 @@
+from django.test.client import RequestFactory
 from django.conf import settings
 from django.test import TestCase, Client
 
@@ -6,6 +7,8 @@ from django.urls import reverse
 
 from merchant.models import Merchant
 from product.models import Product
+from product.views import detail, success, add_new_product, get_formatted_address, product_search, product_filter, \
+    product_ship
 from user.models import User
 
 
@@ -52,3 +55,9 @@ class ProductTestCase(TestCase):
             )
         counts_after_upload = Product.objects.all().count()
         self.assertEqual(counts_after_upload,counts_before_upload)
+
+    def test_details(self):
+        rf = RequestFactory()
+        detail(rf, 1)
+        success(rf)
+        get_formatted_address("1","2","3")
